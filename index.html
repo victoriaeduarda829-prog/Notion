@@ -49,7 +49,7 @@ table {
 }
 
 .day-header{
-    background-color: #E6F7FC;
+    background-color: #D5E3ED;
 }
 
 td,th {
@@ -223,21 +223,18 @@ function calendar(widget, data)
 
     fila = document.createElement('tr');
 
-    for(var i = 1; i < 7; i++)
-    {
-        fila.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>';
-    }
+    for(var i = 0; i < 7; i++)
+{
+    fila.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>';
+}
 
     fila.innerHTML += '<th class="day-header">' + days_abr[0] + '</th>';
     e.appendChild(fila);
 
     /* Obtinc el dia que va acabar el mes anterior */
-    var inici_mes =
-        new Date(data.getFullYear(), data.getMonth(), -1).getDay();
+   var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
 
-    var actual = new Date(data.getFullYear(),
-			  data.getMonth(),
-			  -inici_mes);
+    var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1);
 
     /* 6 setmanes per cobrir totes les posiblitats
      *  Quedaria mes consistent alhora de mostrar molts mesos 
@@ -246,9 +243,9 @@ function calendar(widget, data)
     {
         var fila = document.createElement('tr');
 
-        for(var d = 1; d < 8; d++)
-        {
-	    var cela = document.createElement('td');
+        for(var d = 0; d < 7; d++)
+        
+	    var cela = document.createElment('td');
 	    var span = document.createElement('span');
 
 	    cela.appendChild(span);
