@@ -45,13 +45,23 @@
             width: 42px; 
             border-radius: 6px; 
             color: white; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
         .days { background: #81A6C6; }
         .hours { background: #eeeeee; color: #183059; }
         .minutes { background: #AACDDC; }
-        .seconds { background: #D2C4B4; transition: all 0.2s ease; }
+        
+        .seconds { 
+            background: #D2C4B4; 
+            animation: pulse 1s infinite; 
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
 
         .numbers { 
             font-family: 'Montserrat', sans-serif; 
