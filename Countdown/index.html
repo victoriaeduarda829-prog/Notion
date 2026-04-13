@@ -15,21 +15,40 @@
         .hours { background: #eeeeee; color: #183059; }
         .minutes { background: #AACDDC; }
         .seconds { background: #D2C4B4; }
-
         .numbers { font-family: 'Montserrat', sans-serif; font-size: 1.7em; display: block; margin-bottom: 0px; }
+
+        #container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px; 
+
+    .title {
+        color: white;
+        font-family: 'Lato', sans-serif;
+        font-size: 1.2em;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-weight: bold;
+    }
+            
     </style>
 </head>
 <body>
 
-<div id="timer">
-    <div class="unit days"><span id="days" class="numbers">0</span> days</div>
-    <div class="unit hours"><span id="hours" class="numbers">0</span> hours</div>
-    <div class="unit minutes"><span id="minutes" class="numbers">0</span> mins</div>
-    <div class="unit seconds"><span id="seconds" class="numbers">0</span> secs</div>
+<div id="container">
+    <div class="title">Até eu me matar:</div> 
+    
+    <div id="timer">
+        <div class="unit days"><span id="days" class="numbers">0</span> days</div>
+        <div class="unit hours"><span id="hours" class="numbers">0</span> hours</div>
+        <div class="unit minutes"><span id="minutes" class="numbers">0</span> mins</div>
+        <div class="unit seconds"><span id="seconds" class="numbers">0</span> secs</div>
+    </div>
 </div>
-
+  
 <script>
-    const targetDate = new Date('Oct 15, 2026 00:00:00').getTime();
+    const targetDate = new Date('Oct 06, 2026 00:00:00').getTime();
 
     function updateTimer() {
         const now = new Date().getTime();
