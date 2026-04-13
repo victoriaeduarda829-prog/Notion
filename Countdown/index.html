@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://googleapis.com|Montserrat:900">
+    <link href="https://googleapis.com" rel="stylesheet">
     <title>Notion Countdown</title>
     <style>
         body { background: #191919; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Lato', sans-serif; }
         
-        #timer { text-align: center; text-transform: uppercase; font-size: .65em; letter-spacing: 2px; display: flex; gap: 10px; }
+        #timer { text-align: center; text-transform: uppercase; font-size: .5em; letter-spacing: 1px; display: flex; gap: 6px; }
 
-        .unit { padding: 15px; width: 75px; border-radius: 8px; color: white; }
+        .unit { padding: 8px; width: 50px; border-radius: 6px; color: white; }
         .days { background: #81A6C6; }
         .hours { background: #eeeeee; color: #183059; }
         .minutes { background: #AACDDC; }
         .seconds { background: #D2C4B4; }
 
-        .numbers { font-family: 'Montserrat', sans-serif; font-size: 2.8em; display: block; margin-bottom: 2px; }
+        /* Diminuí o tamanho do número de 2.8em para 1.6em */
+        .numbers { font-family: 'Montserrat', sans-serif; font-size: 1.6em; display: block; margin-bottom: 0px; }
     </style>
 </head>
 <body>
@@ -29,6 +30,7 @@
 </div>
 
 <script>
+    // Defina sua data aqui
     const targetDate = new Date('Oct 15, 2026 00:00:00').getTime();
 
     function updateTimer() {
@@ -36,7 +38,7 @@
         const diff = targetDate - now;
 
         if (diff <= 0) {
-            document.getElementById("timer").innerHTML = "<h1>Goal Reached!</h1>";
+            document.getElementById("timer").innerHTML = "<h1 style='color:white; font-size: 1em;'>Goal Reached!</h1>";
             return;
         }
 
