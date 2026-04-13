@@ -2,22 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlipDown Countdown</title>
     <link rel="stylesheet" href="https://jsdelivr.net">
-    <script src="https://cdn.jsdelivr.net/npm/flipdown@0.3.2/dist/flipdown.min.js"></script>
+    <script src="https://jsdelivr.net"></script>
     <style>
         body { 
-            background: transparent; 
-            margin: 0; 
+            background: #191919; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            height: 100vh;
+            height: 100vh; 
+            margin: 0;
+            font-family: sans-serif;
         }
-        #flipdown { 
-            min-width: 450px; 
-        }
+        .flipdown.flipdown__theme-dark { font-family: sans-serif; }
     </style>
 </head>
 <body>
@@ -25,15 +22,13 @@
     <div id="flipdown" class="flipdown"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const targetDate = new Date('Oct 15, 2025 00:00:00').getTime() / 1000;
+        const targetDate = new Date('Oct 15, 2026 00:00:00').getTime() / 1000;
 
-            const flipdown = new FlipDown(targetDate)
-                .start()
-                .ifEnded(() => {
-                    console.log('Countdown finished!');
-                });
-        });
+        new FlipDown(targetDate)
+            .start()
+            .ifEnded(() => {
+                console.log('Countdown finished!');
+            });
     </script>
 </body>
 </html>
