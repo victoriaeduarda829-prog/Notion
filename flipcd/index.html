@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://googleapis.com|Montserrat:900">
+    <link rel="stylesheet" href="https://googleapis.com">
     <title>Notion Countdown</title>
     <style>
-        body { background: #191919; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Lato', sans-serif; }
+        body { background: #191919; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Lato', sans-serif; overflow: hidden; }
         
         #timer { text-align: center; text-transform: uppercase; font-size: .65em; letter-spacing: 2px; display: flex; gap: 10px; }
 
@@ -16,7 +16,9 @@
         .minutes { background: #AACDDC; }
         .seconds { background: #D2C4B4; }
 
-        .numbers { font-family: 'Montserrat', sans-serif; font-size: 2.8em; display: block; margin-bottom: 2px; }
+        .numbers { font-family: 'Montserrat', sans-serif; font-size: 2.8em; display: block; margin-bottom: 2px; line-height: 1; }
+        
+        h1 { color: white; font-family: 'Montserrat', sans-serif; }
     </style>
 </head>
 <body>
