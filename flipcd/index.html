@@ -3,37 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlipDown Countdown</title>
-    <link rel="stylesheet" href="https://jsdelivr.net">
-    <script src="https://cdn.jsdelivr.net/npm/flipdown@0.3.2/dist/flipdown.min.js"></script>
+    <link rel="stylesheet" href="https://googleapis.com|Montserrat:900">
+    <title>Notion Countdown</title>
     <style>
-        body { 
-            background: #191919; 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh;
-        }
-        #flipdown { 
-            min-width: 450px; 
-        }
+        body { background: #191919; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Lato', sans-serif; }
+        
+        #timer { text-align: center; text-transform: uppercase; font-size: .65em; letter-spacing: 2px; display: flex; gap: 10px; }
+
+        .unit { padding: 15px; width: 75px; border-radius: 8px; color: white; }
+        .days { background: #81A6C6; }
+        .hours { background: #eeeeee; color: #183059; }
+        .minutes { background: #AACDDC; }
+        .seconds { background: #D2C4B4; }
+
+        .numbers { font-family: 'Montserrat', sans-serif; font-size: 2.8em; display: block; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
-    <div id="flipdown" class="flipdown"></div>
+<div id="timer">
+    <div class="unit days"><span id="days" class="numbers">0</span> days</div>
+    <div class="unit hours"><span id="hours" class="numbers">0</span> hours</div>
+    <div class="unit minutes"><span id="minutes" class="numbers">0</span> mins</div>
+    <div class="unit seconds"><span id="seconds" class="numbers">0</span> secs</div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const targetDate = new Date('Oct 15, 2026 00:00:00').getTime() / 1000;
+<script>
+    const targetDate = new Date('Oct 15, 2026 00:00:00').getTime();
 
-            const flipdown = new FlipDown(targetDate)
-                .start()
-                .ifEnded(() => {
-                    console.log('Countdown finished!');
-                });
-        });
-    </script>
+    function updateTimer() {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+            document.getElementById("timer").innerHTML = "<h1>Goal Reached!</h1>";
+            return;
+        }
+
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+
+        document.getElementById("days").innerText = d;
+        document.getElementById("hours").innerText = h;
+        document.getElementById("minutes").innerText = m;
+        document.getElementById("seconds").innerText = s;
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+</script>
 </body>
 </html>
