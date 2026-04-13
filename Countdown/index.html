@@ -6,38 +6,64 @@
     <link href="https://googleapis.com" rel="stylesheet">
     <title>Notion Countdown</title>
     <style>
-        body { background: #191919; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Lato', sans-serif; }
-        
-        #timer { text-align: center; text-transform: uppercase; font-size: .5em; letter-spacing: 1px; display: flex; gap: 6px; }
+        body { 
+            background: #191919; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            font-family: 'Lato', sans-serif; 
+        }
 
-        .unit { padding: 10px 6px; width: 42px; border-radius: 6px; color: white; }
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; 
+        }
+
+        .title {
+            color: white;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+        
+        #timer { 
+            text-align: center; 
+            text-transform: uppercase; 
+            font-size: .5em; 
+            letter-spacing: 1px; 
+            display: flex; 
+            gap: 6px; 
+        }
+
+        .unit { 
+            padding: 10px 6px; 
+            width: 42px; 
+            border-radius: 6px; 
+            color: white; 
+        }
+
         .days { background: #81A6C6; }
         .hours { background: #eeeeee; color: #183059; }
         .minutes { background: #AACDDC; }
         .seconds { background: #D2C4B4; }
-        .numbers { font-family: 'Montserrat', sans-serif; font-size: 1.7em; display: block; margin-bottom: 0px; }
 
-        #container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 15px; 
-
-    .title {
-        color: white;
-        font-family: 'Lato', sans-serif;
-        font-size: 1.2em;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        font-weight: bold;
-    }
-            
+        .numbers { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1.7em; 
+            display: block; 
+            margin-bottom: 0px; 
+        }
     </style>
 </head>
 <body>
 
 <div id="container">
-    <div class="title">Até eu me matar:</div> 
+    <div class="title">Até eu me matar:</div>
     
     <div id="timer">
         <div class="unit days"><span id="days" class="numbers">0</span> days</div>
@@ -46,7 +72,7 @@
         <div class="unit seconds"><span id="seconds" class="numbers">0</span> secs</div>
     </div>
 </div>
-  
+
 <script>
     const targetDate = new Date('Oct 06, 2026 00:00:00').getTime();
 
@@ -55,7 +81,7 @@
         const diff = targetDate - now;
 
         if (diff <= 0) {
-            document.getElementById("timer").innerHTML = "<h1 style='color:white; font-size: 1em;'>Goal Reached!</h1>";
+            document.getElementById("container").innerHTML = "<h1 style='color:white; font-size: 1em;'>Sobrevivi!</h1>";
             return;
         }
 
