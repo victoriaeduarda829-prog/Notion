@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boho Notion Calendar</title>
+    <title>Classic Blue Calendar - English</title>
     <style>
-        /* Cor de fundo idêntica ao Dark Mode do Notion */
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background-color: #191919; 
             margin: 0; 
             display: flex;
@@ -16,92 +15,86 @@
             height: 100vh;
         }
 
+        /* Zoom ajustado para 0.7 */
         #calendar { zoom: 0.7; }
 
         table {
             border-collapse: separate;
-            border-spacing: 6px;
-            background-color: #F7F8F0; /* Sua cor clarinha */
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid #7EACB5;
+            border-spacing: 4px;
+            background-color: #EEEEEE; 
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+            border: 1px solid #1A4870;
         }
 
-        /* Cabeçalho */
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .month { 
-            color: #4A4A4A; 
-            font-size: 1.3em; 
+            color: #1A4870; 
+            font-size: 1.25em; 
             font-weight: 800;
-            text-transform: capitalize; 
+            text-transform: capitalize; /* Primeira letra maiúscula */
         }
 
         .year { 
             font-size: 11px; 
-            color: #7EACB5; 
-            font-weight: 600;
-            display: block;
-            letter-spacing: 1px;
-        }
-
-        /* Dias da Semana */
-        .day-header { 
-            color: #C96868; /* Tom complementar terracota */
-            font-size: 11px; 
-            font-weight: bold;
-            padding-bottom: 10px;
-        }
-
-        /* Células dos Dias */
-        td > span { 
-            color: #4A4A4A; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 12px;
-            font-size: 14px;
+            color: #5B7A96; 
             font-weight: 500;
-            transition: 0.3s;
+            display: block;
+            letter-spacing: 0.5px;
         }
 
-        /* Dia de Hoje - Usando o #7EACB5 */
-        td.avui > span { 
-            background-color: #7EACB5; 
-            color: #ffffff !important; 
-            box-shadow: 0 4px 10px rgba(126, 172, 181, 0.4);
+        .day-header { 
+            color: #888888; 
+            font-size: 10px; 
+            font-weight: 700;
+            text-transform: uppercase;
+            padding-bottom: 8px;
         }
 
-        /* Dias fora do mês atual */
-        td.fora > span { color: #D1C7BD; }
-
-        /* Botões de Navegação */
-        .boto-next, .boto-prev {
-            background: #F2E8DF;
-            color: #7EACB5;
-            border: none;
-            border-radius: 10px;
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            font-size: 20px;
+        td > span { 
+            color: #2D2D2D; 
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: 0.2s;
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        td.avui > span { 
+            background-color: #1A4870; 
+            color: #ffffff !important; 
+            box-shadow: 0 4px 12px rgba(26, 72, 112, 0.3);
+        }
+
+        td.fora > span { color: #BBBBBB; }
+
+        .boto-next, .boto-prev {
+            background: #E0E0E0;
+            color: #1A4870;
+            border: 1px solid #D0D0D0;
+            border-radius: 6px;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
         }
 
         .boto-next:hover, .boto-prev:hover {
-            background: #7EACB5;
-            color: #FFF4EA;
+            background: #1A4870;
+            color: #EEEEEE;
         }
     </style>
 </head>
@@ -109,7 +102,8 @@
     <div id="calendar"></div>
 
     <script>
-        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        // Nomes alterados para Inglês
+        var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
         var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
         function calendar(widget, data) {
@@ -174,3 +168,4 @@
     </script>
 </body>
 </html>
+
