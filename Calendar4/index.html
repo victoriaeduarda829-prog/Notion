@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rounded Brutalist Calendar</title>
+    <style>
+        body { font-family: monospace; background-color: #191919; margin: 0; }
+        #calendar { margin: 0 auto; font-size: 14px; zoom: 0.8; display: flex; justify-content: center; }
+        
+        table {
+            border-collapse: separate; /* Alterado para permitir arredondamento perfeito */
+            border-spacing: 0;
+            table-layout: fixed;
+            position: absolute;
+            background-color: #fff;
+            border: 2px solid #000000;
+            box-shadow: 4px 4px 0px 0px #000000;
+            border-radius: 20px; /* Bordas bem arredondadas */
+            overflow: hidden; /* Garante que o fundo preto do topo siga o arredondamento */
+        }
+
+        .month { 
+            background-color: #000; 
+            color: #fff; 
+            font-size: 1.5em; 
+            padding: 15px 0;
+        }
+
+        .year { font-size: 12px; font-weight: normal; display: block; text-shadow: none; color: #fff; }
+        
+        .day-header { 
+            background-color: #D5E3ED; 
+            border-bottom: 1px solid #000;
+        }
+
+        td, th { text-align: center; background-color: #fff; padding: 10px; }
+        td { padding: 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        
+        td>span { 
+            color: rgb(0, 0, 0); 
+            padding: 10px; 
+            display: block; 
+            border: 2px solid transparent; 
+        }
+
+        /* Dia atual também arredondado */
+        td.avui>span { 
+            font-weight: bold; 
+            background-color: #000000; 
+            color: #fff; 
+            border-radius: 12px; 
+            margin: 4px;
+        }
+
+        td.fora > span { opacity: 0.2; }
+
+        /* Botões arredondados */
+        .boto-next, .boto-prev {
+            background: #000; 
+            color: #fff; 
+            border: 1px solid #333; 
+            font-size: 20px;
+            font-weight: bold; 
+            height: 32px; 
+            width: 32px; 
+            position: absolute; 
+            top: 18px; 
+            cursor: pointer;
+            border-radius: 50%; /* Botões circulares */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .boto-next { right: 15px; }
+        .boto-prev { left: 15px; }
+    </style>
+</head>
+<body>
+    <div id="calendar"></div>
+    <script>
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        Number.prototype.pad = function(num) {
+            var str = this.toString();
+            while (str.length < num) str = '0' + str;
+            return str;
+        }
+
+        function calendar(widget, data) {
+            var original = widget.getElementsByTagName('table')[0];
+            if (original) widget.removeChild(original);
+
+            var e = document.createElement('table');
+            widget.appendChild(e);
+
+            var fila = document.createElement('tr');
+            var titol = document.createElement('th');
+            titol.setAttribute('colspan', 7);
+            titol.className = 'month';
+
+            var boto_prev = document.createElement('button');
+            boto_prev.className = 'boto-prev';
+            boto_prev.innerHTML = '◂';
+            boto_prev.onclick = function() { data.setMonth(data.getMonth() - 1); calendar(widget, new Date(data)); };
+
+            var boto_next = document.createElement('button');
+            boto_next.className = 'boto-next';
+            boto_next.innerHTML = '▸';
+            boto_next.onclick = function() { data.setMonth(data.getMonth() + 1); calendar(widget, new Date(data)); };
+
+            titol.appendChild(boto_prev);
+            titol.innerHTML += months[data.getMonth()] + '<span class="year">' + data.getFullYear() + '</span>';
+            titol.appendChild(boto_next);
+            
+            // Reatribui eventos após innerHTML
+            titol.querySelector('.boto-prev').onclick = boto_prev.onclick;
+            titol.querySelector('.boto-next').onclick = boto_next.onclick;
+
+            fila.appendChild(titol);
+            e.appendChild(fila);
+
+            var fila_dias = document.createElement('tr');
+            for (var i = 0; i < 7; i++) {
+                fila_dias.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>';
+            }
+            e.appendChild(fila_dias);
+
+            var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
+            var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1);
+
+            for (var s = 0; s < 6; s++) {
+                var nova_fila = document.createElement('tr');
+                for (var d = 0; d < 7; d++) {
+                    var cela = document.createElement('td');
+                    var span = document.createElement('span');
+                    span.innerHTML = actual.getDate();
+                    if (actual.getMonth() !== data.getMonth()) cela.className = 'fora';
+                    if (new Date().toDateString() === actual.toDateString()) cela.className = 'avui';
+                    cela.appendChild(span);
+                    nova_fila.appendChild(cela);
+                    actual.setDate(actual.getDate() + 1);
+                }
+                e.appendChild(nova_fila);
+            }
+        }
+
+        calendar(document.getElementById('calendar'), new Date());
+    </script>
+</body>
+</html>
