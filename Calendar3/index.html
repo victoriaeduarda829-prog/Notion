@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Calendar</title>
+    <style>
+        /* Ajustado para o Dark Mode do Notion */
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            background-color: #191919; /* Cor exata do fundo dark do Notion */
+            margin: 0; 
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #calendar { margin-top: 10px; zoom: 0.85; }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 4px;
+            background-color: #202020; /* Um tom levemente mais claro que o fundo */
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid #373737;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        /* Título e Navegação */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .month { 
+            color: #ffffff; 
+            font-size: 1.2em; 
+            font-weight: 600;
+        }
+
+        .year { 
+            font-size: 11px; 
+            color: #888; 
+            font-weight: 400;
+            display: block;
+        }
+
+        /* Dias da Semana */
+        .day-header { 
+            color: #555; 
+            font-size: 10px; 
+            font-weight: bold;
+            text-transform: uppercase;
+            padding-bottom: 8px;
+        }
+
+        /* Números dos Dias */
+        td > span { 
+            color: #E0E0E0; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        /* Dia de Hoje - Estilo Neon */
+        td.avui > span { 
+            background-color: rgba(45, 170, 219, 0.2);
+            color: #2db7db !important; 
+            border: 1px solid #2db7db;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(45, 170, 219, 0.3);
+        }
+
+        /* Dias fora do mês */
+        td.fora > span { color: #373737; }
+
+        /* Botões de Seta */
+        .boto-next, .boto-prev {
+            background: #2f2f2f;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 6px;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .boto-next:hover, .boto-prev:hover { background: #3f3f3f; }
+    </style>
+</head>
+<body>
+    <div id="calendar"></div>
+
+    <script>
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        function calendar(widget, data) {
+            widget.innerHTML = '';
+            var e = document.createElement('table');
+            widget.appendChild(e);
+
+            var headRow = document.createElement('tr');
+            var headCell = document.createElement('th');
+            headCell.setAttribute('colspan', 7);
+            
+            var navContainer = document.createElement('div');
+            navContainer.className = 'nav-container';
+
+            var boto_prev = document.createElement('button');
+            boto_prev.className = 'boto-prev';
+            boto_prev.innerHTML = '‹';
+            boto_prev.onclick = function() { data.setMonth(data.getMonth() - 1); calendar(widget, new Date(data)); };
+
+            var titleDiv = document.createElement('div');
+            titleDiv.className = 'month';
+            titleDiv.innerHTML = months[data.getMonth()] + '<span class="year">' + data.getFullYear() + '</span>';
+
+            var boto_next = document.createElement('button');
+            boto_next.className = 'boto-next';
+            boto_next.innerHTML = '›';
+            boto_next.onclick = function() { data.setMonth(data.getMonth() + 1); calendar(widget, new Date(data)); };
+
+            navContainer.appendChild(boto_prev);
+            navContainer.appendChild(titleDiv);
+            navContainer.appendChild(boto_next);
+            headCell.appendChild(navContainer);
+            headRow.appendChild(headCell);
+            e.appendChild(headRow);
+
+            var fila_dias = document.createElement('tr');
+            for (var i = 0; i < 7; i++) {
+                fila_dias.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>';
+            }
+            e.appendChild(fila_dias);
+
+            var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
+            var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1);
+
+            for (var s = 0; s < 6; s++) {
+                var nova_fila = document.createElement('tr');
+                for (var d = 0; d < 7; d++) {
+                    var cela = document.createElement('td');
+                    var span = document.createElement('span');
+                    span.innerHTML = actual.getDate();
+                    if (actual.getMonth() !== data.getMonth()) cela.className = 'fora';
+                    if (new Date().toDateString() === actual.toDateString()) cela.className = 'avui';
+                    cela.appendChild(span);
+                    nova_fila.appendChild(cela);
+                    actual.setDate(actual.getDate() + 1);
+                }
+                e.appendChild(nova_fila);
+            }
+        }
+        calendar(document.getElementById('calendar'), new Date());
+    </script>
+</body>
+</html>
