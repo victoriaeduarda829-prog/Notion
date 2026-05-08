@@ -3,120 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Minimal Calendar</title>
+    <title>Modern Soft Calendar</title>
     <style>
-        /* Estética Minimalista e Suave */
         body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            font-family: 'Inter', -apple-system, sans-serif; 
             background-color: transparent; 
             margin: 0; 
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
 
-        #calendar { 
-            zoom: 0.9;
-        }
+        #calendar { margin-top: 20px; zoom: 0.9; }
 
         table {
             border-collapse: separate;
-            border-spacing: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            border-spacing: 5px;
+            background-color: #ffffff; /* Fundo sólido para não sumir */
+            border-radius: 15px;
             padding: 15px;
-            color: #fff;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
         }
 
-        /* Cabeçalho do Mês */
+        /* Título do Mês */
         .month { 
-            font-size: 1.2em; 
-            font-weight: 600;
-            padding-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #72a1ed; /* Azul suave */
+            color: #1a1a1a; 
+            font-size: 1.4em; 
+            font-weight: 700;
+            padding: 10px 0;
         }
 
         .year { 
-            font-size: 10px; 
-            font-weight: 300; 
-            display: block; 
-            color: rgba(255,255,255,0.5);
-            margin-top: 4px;
+            font-size: 12px; 
+            font-weight: 400; 
+            color: #999; 
+            display: block;
         }
 
-        /* Dias da Semana */
+        /* Cabeçalho dos Dias */
         .day-header { 
-            font-size: 0.7em;
-            color: rgba(255,255,255,0.4);
+            color: #999; 
+            font-size: 0.75em; 
+            font-weight: 600;
             text-transform: uppercase;
-            padding-bottom: 10px;
+            padding: 10px 0;
         }
 
-        td { 
-            cursor: default;
-        }
-
-        td>span { 
+        /* Células de Dias */
+        td { padding: 2px; }
+        
+        td > span { 
+            color: #444; 
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 35px;
-            height: 35px;
+            width: 38px;
+            height: 38px;
             border-radius: 10px;
-            transition: all 0.3s ease;
-            font-size: 13px;
+            font-size: 14px;
+            transition: 0.2s;
         }
 
-        /* Dia Atual - Destaque em Gradiente */
-        td.avui>span { 
-            background: linear-gradient(135deg, #72a1ed 0%, #b46ed3 100%);
-            color: #fff; 
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(114, 161, 237, 0.4);
+        /* Dia de Hoje - Destaque Azul */
+        td.avui > span { 
+            background-color: #007AFF; 
+            color: #fff !important; 
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
         }
 
-        /* Dias fora do mês atual */
-        td.fora > span { opacity: 0.15; }
+        /* Dias de outros meses */
+        td.fora > span { color: #ddd; }
 
         /* Botões de Navegação */
-        .boto-next, .boto-prev {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            height: 28px;
-            width: 28px;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .boto-next:hover, .boto-prev:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
         }
+
+        .boto-next, .boto-prev {
+            background: #f0f0f0;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .boto-next:hover, .boto-prev:hover { background: #e5e5e5; }
     </style>
 </head>
 <body>
     <div id="calendar"></div>
 
     <script>
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var days_abr = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+        var months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        var days_abr = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
         Number.prototype.pad = function(num) {
             var str = this.toString();
@@ -125,13 +113,10 @@
         }
 
         function calendar(widget, data) {
-            var original = widget.getElementsByTagName('table')[0];
-            if (original) widget.removeChild(original);
-
+            widget.innerHTML = '';
             var e = document.createElement('table');
             widget.appendChild(e);
 
-            // Header row with buttons
             var headRow = document.createElement('tr');
             var headCell = document.createElement('th');
             headCell.setAttribute('colspan', 7);
