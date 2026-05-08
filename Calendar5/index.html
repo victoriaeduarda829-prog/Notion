@@ -1,1 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Study Calendar</title>
+    <style>
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #191919; /* Fundo Dark do Notion */
+            margin: 0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
+        #calendar { zoom: 0.8; }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 5px;
+            background-color: #F7F6E5; /* Cor de fundo principal */
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border: 2px solid #36064D;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        /* Título em Roxo Profundo */
+        .month { 
+            color: #36064D; 
+            font-size: 1.4em; 
+            font-weight: 800;
+            text-transform: capitalize;
+        }
+
+        /* Ano em Azul Água */
+        .year { 
+            font-size: 11px; 
+            color: #76D2DB; 
+            font-weight: 700;
+            display: block;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Dias da Semana em Vermelho */
+        .day-header { 
+            color: #DA4848; 
+            font-size: 11px; 
+            font-weight: 800;
+            text-transform: uppercase;
+            padding-bottom: 12px;
+        }
+
+        td > span { 
+            color: #36064D; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        /* Dia Atual - Destaque em Azul Água com texto Roxo */
+        td.avui > span { 
+            background-color: #76D2DB; 
+            color: #36064D !important; 
+            border: 2px solid #36064D;
+            box-shadow: 3px 3px 0px #36064D;
+        }
+
+        /* Dias fora do mês */
+        td.fora > span { color: rgba(54, 6, 77, 0.2); }
+
+        /* Botões de Navegação */
+        .boto-next, .boto-prev {
+            background: #36064D;
+            color: #F7F6E5;
+            border: none;
+            border-radius: 10px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: 0.2s;
+        }
+
+        .boto-next:hover, .boto-prev:hover {
+            background: #DA4848;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="calendar"></div>
+
+    <script>
+        var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        function calendar(widget, data) {
+            widget.innerHTML = '';
+            var e = document.createElement('table');
+            widget.appendChild(e);
+
+            var headRow = document.createElement('tr');
+            var headCell = document.createElement('th');
+            headCell.setAttribute('colspan', 7);
+            
+            var navContainer = document.createElement('div');
+            navContainer.className = 'nav-container';
+
+            var boto_prev = document.createElement('button');
+            boto_prev.className = 'boto-prev';
+            boto_prev.innerHTML = '‹';
+            boto_prev.onclick = function() { data.setMonth(data.getMonth() - 1); calendar(widget, new Date(data)); };
+
+            var titleDiv = document.createElement('div');
+            titleDiv.className = 'month';
+            titleDiv.innerHTML = months[data.getMonth()] + '<span class="year">' + data.getFullYear() + '</span>';
+
+            var boto_next = document.createElement('button');
+            boto_next.className = 'boto-next';
+            boto_next.innerHTML = '›';
+            boto_next.onclick = function() { data.setMonth(data.getMonth() + 1); calendar(widget, new Date(data)); };
+
+            navContainer.appendChild(boto_prev);
+            navContainer.appendChild(titleDiv);
+            navContainer.appendChild(boto_next);
+            headCell.appendChild(navContainer);
+            headRow.appendChild(headCell);
+            e.appendChild(headRow);
+
+            var fila_dias = document.createElement('tr');
+            for (var i = 0; i < 7; i++) {
+                fila_dias.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>';
+            }
+            e.appendChild(fila_dias);
+
+            var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
+            var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1);
+
+            for (var s = 0; s < 6; s++) {
+                var nova_fila = document.createElement('tr');
+                for (var d = 0; d < 7; d++) {
+                    var cela = document.createElement('td');
+                    var span = document.createElement('span');
+                    span.innerHTML = actual.getDate();
+                    if (actual.getMonth() !== data.getMonth()) cela.className = 'fora';
+                    if (new Date().toDateString() === actual.toDateString()) cela.className = 'avui';
+                    cela.appendChild(span);
+                    nova_fila.appendChild(cela);
+                    actual.setDate(actual.getDate() + 1);
+                }
+                e.appendChild(nova_fila);
+            }
+        }
+
+        calendar(document.getElementById('calendar'), new Date());
+    </script>
+</body>
+</html>
