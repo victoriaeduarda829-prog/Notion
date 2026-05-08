@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Minimal Calendar</title>
+    <style>
+        /* Estética Minimalista e Suave */
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: transparent; 
+            margin: 0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #calendar { 
+            zoom: 0.9;
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 15px;
+            color: #fff;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* Cabeçalho do Mês */
+        .month { 
+            font-size: 1.2em; 
+            font-weight: 600;
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #72a1ed; /* Azul suave */
+        }
+
+        .year { 
+            font-size: 10px; 
+            font-weight: 300; 
+            display: block; 
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+        }
+
+        /* Dias da Semana */
+        .day-header { 
+            font-size: 0.7em;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            padding-bottom: 10px;
+        }
+
+        td { 
+            cursor: default;
+        }
+
+        td>span { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        /* Dia Atual - Destaque em Gradiente */
+        td.avui>span { 
+            background: linear-gradient(135deg, #72a1ed 0%, #b46ed3 100%);
+            color: #fff; 
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(114, 161, 237, 0.4);
+        }
+
+        /* Dias fora do mês atual */
+        td.fora > span { opacity: 0.15; }
+
+        /* Botões de Navegação */
+        .boto-next, .boto-prev {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            height: 28px;
+            width: 28px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .boto-next:hover, .boto-prev:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="calendar"></div>
+
+    <script>
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var days_abr = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+        Number.prototype.pad = function(num) {
+            var str = this.toString();
+            while (str.length < num) str = '0' + str;
+            return str;
+        }
+
+        function calendar(widget, data) {
+            var original = widget.getElementsByTagName('table')[0];
+            if (original) widget.removeChild(original);
+
+            var e = document.createElement('table');
+            widget.appendChild(e);
+
+            // Header row with buttons
+            var headRow = document.createElement('tr');
+            var headCell = document.createElement('th');
+            headCell.setAttribute('colspan', 7);
+            
+            var navContainer = document.createElement('div');
+            navContainer.className = 'nav-container';
+
+            var boto_prev = document.createElement('button');
+            boto_prev.className = 'boto-prev';
+            boto_prev.innerHTML = '‹';
+            boto_prev.onclick = function() { data.setMonth(data.getMonth() - 1); calendar(widget, new Date(data)); };
+
+            var titleDiv = document.createElement('div');
+            titleDiv.className = 'month';
+            titleDiv.innerHTML = months[data.getMonth()] + '<span class="year">' + data.getFullYear() + '</span>';
+
+            var boto_next = document.createElement('button');
+            boto_next.className = 'boto-next';
+            boto_next.innerHTML = '›';
+            boto_next.onclick = function() { data.setMonth(data.getMonth() + 1); calendar(widget, new Date(data)); };
+
+            navContainer.appendChild(boto_prev);
+            navContainer.appendChild(titleDiv);
+            navContainer.appendChild(boto_next);
+            headCell.appendChild(navContainer);
+            headRow.appendChild(headCell);
+            e.appendChild(headRow);
+
+            var fila_dias = document.createElement('tr');
+            for (var i = 0; i < 7; i++) {
+                fila_dias.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>';
+            }
+            e.appendChild(fila_dias);
+
+            var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
+            var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1);
+
+            for (var s = 0; s < 6; s++) {
+                var nova_fila = document.createElement('tr');
+                for (var d = 0; d < 7; d++) {
+                    var cela = document.createElement('td');
+                    var span = document.createElement('span');
+                    span.innerHTML = actual.getDate();
+                    if (actual.getMonth() !== data.getMonth()) cela.className = 'fora';
+                    if (new Date().toDateString() === actual.toDateString()) cela.className = 'avui';
+                    cela.appendChild(span);
+                    nova_fila.appendChild(cela);
+                    actual.setDate(actual.getDate() + 1);
+                }
+                e.appendChild(nova_fila);
+            }
+        }
+
+        calendar(document.getElementById('calendar'), new Date());
+    </script>
+</body>
+</html>
