@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Sea Calendar</title>
+    <title>Matte Slate Calendar</title>
     <style>
         body { 
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background-color: #191919; 
             margin: 0; 
             display: flex;
@@ -15,91 +15,89 @@
             height: 100vh;
         }
 
-        #calendar { zoom: 0.7; }
+        #calendar { zoom: 0.8; }
 
         table {
             border-collapse: separate;
             border-spacing: 4px;
-            background-color: #202020; /* Fundo solicitado */
-            border-radius: 18px;
+            background-color: #202020; 
+            border-radius: 15px;
             padding: 20px;
-            border: 2px solid #1A4870; /* Um dos seus azuis como borda */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            /* Azul fosco e profundo na borda */
+            border: 1px solid #2C3E50; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
-        /* Título do Mês */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
         .month { 
-            color: #ffffff; 
-            font-size: 1.4em; 
-            font-weight: 700;
+            color: #E0E0E0; /* Branco fosco */
+            font-size: 1.25em; 
+            font-weight: 600;
             text-transform: capitalize;
-            padding-bottom: 5px;
         }
 
         .year { 
             font-size: 11px; 
-            color: #1A4870; /* Seu outro azul aqui */
-            filter: brightness(1.5); /* Aumentando o brilho para aparecer */
-            font-weight: bold;
+            color: #5B7A96; /* Azul fosco acinzentado */
+            font-weight: 500;
             display: block;
+            margin-top: 2px;
         }
 
-        /* Dias da Semana */
         .day-header { 
-            color: #555; 
+            color: #4A4A4A; 
             font-size: 10px; 
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
-            padding: 10px 0;
+            padding-bottom: 10px;
         }
 
-        /* Números dos Dias */
         td > span { 
-            color: #9DB2BF; /* Cinza azulado claro para contraste */
+            color: #B0B0B0; /* Cinza claro fosco */
             display: flex;
             align-items: center;
             justify-content: center;
             width: 36px;
             height: 36px;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 14px;
+            transition: 0.2s;
         }
 
-        /* Dia Atual - Onde o brilho acontece */
+        /* Dia Atual - Prateado Fosco */
         td.avui > span { 
-            background: linear-gradient(135deg, #1A4870, #1F316F);
-            color: #00D1FF !important; /* Ciano brilhante para contraste real */
-            font-weight: bold;
-            border: 1px solid #00D1FF;
-            box-shadow: 0 0 15px rgba(0, 209, 255, 0.3);
+            background-color: #C0C0C0; /* Prata */
+            color: #202020 !important; 
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(192, 192, 192, 0.2);
         }
 
         /* Dias fora do mês */
-        td.fora > span { color: #333; }
+        td.fora > span { color: #353535; }
 
-        /* Botões de Navegação */
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
+        /* Botões em azul fosco */
         .boto-next, .boto-prev {
-            background: #1A4870;
-            color: #DFF3F7;
+            background: #2A3B4C;
+            color: #C0C0C0;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             width: 30px;
             height: 30px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 18px;
-            transition: 0.3s;
         }
 
         .boto-next:hover, .boto-prev:hover {
-            background: #1A4870;
-            filter: brightness(1.2);
+            background: #34495E;
         }
     </style>
 </head>
