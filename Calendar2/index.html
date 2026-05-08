@@ -1,116 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Soft Calendar</title>
+    <title>Boho Notion Calendar</title>
     <style>
+        /* Cor de fundo idêntica ao Dark Mode do Notion */
         body { 
-            font-family: 'Inter', -apple-system, sans-serif; 
-            background-color: 191919; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #191919; 
             margin: 0; 
             display: flex;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
-        #calendar { margin-top: 20px; zoom: 0.9; }
+        #calendar { zoom: 0.9; }
 
         table {
             border-collapse: separate;
-            border-spacing: 5px;
-            background-color: #ffffff; /* Fundo sólido para não sumir */
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border: 1px solid #eee;
+            border-spacing: 6px;
+            background-color: #FFF4EA; /* Sua cor clarinha */
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #7EACB5;
         }
 
-        /* Título do Mês */
-        .month { 
-            color: #1a1a1a; 
-            font-size: 1.4em; 
-            font-weight: 700;
-            padding: 10px 0;
-        }
-
-        .year { 
-            font-size: 12px; 
-            font-weight: 400; 
-            color: #999; 
-            display: block;
-        }
-
-        /* Cabeçalho dos Dias */
-        .day-header { 
-            color: #999; 
-            font-size: 0.75em; 
-            font-weight: 600;
-            text-transform: uppercase;
-            padding: 10px 0;
-        }
-
-        /* Células de Dias */
-        td { padding: 2px; }
-        
-        td > span { 
-            color: #444; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        /* Dia de Hoje - Destaque Azul */
-        td.avui > span { 
-            background-color: #007AFF; 
-            color: #fff !important; 
-            font-weight: 600;
-            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
-        }
-
-        /* Dias de outros meses */
-        td.fora > span { color: #ddd; }
-
-        /* Botões de Navegação */
+        /* Cabeçalho */
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
         }
 
-        .boto-next, .boto-prev {
-            background: #f0f0f0;
-            color: #333;
-            border: none;
-            border-radius: 8px;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            font-size: 18px;
+        .month { 
+            color: #4A4A4A; 
+            font-size: 1.3em; 
+            font-weight: 800;
+            text-transform: lowercase; /* Estilo estético */
+        }
+
+        .year { 
+            font-size: 11px; 
+            color: #7EACB5; 
+            font-weight: 600;
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        /* Dias da Semana */
+        .day-header { 
+            color: #C96868; /* Tom complementar terracota */
+            font-size: 11px; 
+            font-weight: bold;
+            padding-bottom: 10px;
+        }
+
+        /* Células dos Dias */
+        td > span { 
+            color: #4A4A4A; 
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.3s;
         }
 
-        .boto-next:hover, .boto-prev:hover { background: #e5e5e5; }
+        /* Dia de Hoje - Usando o #7EACB5 */
+        td.avui > span { 
+            background-color: #7EACB5; 
+            color: #ffffff !important; 
+            box-shadow: 0 4px 10px rgba(126, 172, 181, 0.4);
+        }
+
+        /* Dias fora do mês atual */
+        td.fora > span { color: #D1C7BD; }
+
+        /* Botões de Navegação */
+        .boto-next, .boto-prev {
+            background: #F2E8DF;
+            color: #7EACB5;
+            border: none;
+            border-radius: 10px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .boto-next:hover, .boto-prev:hover {
+            background: #7EACB5;
+            color: #FFF4EA;
+        }
     </style>
 </head>
 <body>
     <div id="calendar"></div>
 
     <script>
-        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-        Number.prototype.pad = function(num) {
-            var str = this.toString();
-            while (str.length < num) str = '0' + str;
-            return str;
-        }
+        var months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+        var days_abr = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
 
         function calendar(widget, data) {
             widget.innerHTML = '';
