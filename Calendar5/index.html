@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Language Dashboard</title>
+    <title>Language Study Dashboard</title>
     <style>
         body { 
             font-family: 'Inter', -apple-system, sans-serif;
@@ -20,16 +20,12 @@
         table {
             border-collapse: separate;
             border-spacing: 0;
-            background-color: #F7F6E5; /* Fundo solicitado */
+            background-color: #F7F6E5; 
             border-radius: 16px;
             overflow: hidden;
-            width: 320px;
+            width: 340px; /* Largura levemente maior para caber as 3 letras */
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
-
-        /* Header Superior mais limpa */
-        .month-header-row {
-            background-color: #F7F6E5;
+            border: 1px solid rgba(54, 6, 77, 0.1);
         }
 
         .nav-container {
@@ -40,70 +36,76 @@
         }
 
         .month { 
-            color: #36064D; /* Roxo nos textos principais */
+            color: #36064D; 
             font-size: 1.3em; 
-            font-weight: 700;
+            font-weight: 800;
             text-transform: capitalize;
         }
 
+        /* Ano ajustado: mais visível em Roxo */
         .year { 
-            font-size: 11px; 
-            color: #76D2DB; /* Azul Água no ano */
-            font-weight: 600;
+            font-size: 12px; 
+            color: #DA4848; 
+            opacity: 0.7;
+            font-weight: 700;
             display: block;
+            margin-top: 2px;
+            letter-spacing: 1px;
         }
 
-        /* Faixa de dias da semana em Azul Água suave */
         .day-header { 
-            background-color: rgba(118, 210, 219, 0.15);
+            background-color: rgba(118, 210, 219, 0.2); /* Azul Água sutil */
             color: #36064D;
-            font-size: 10px; 
+            font-size: 11px; 
             font-weight: 700;
             text-transform: uppercase;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(118, 210, 219, 0.2);
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(118, 210, 219, 0.3);
         }
 
-        td { padding: 5px; text-align: center; }
+        td { padding: 4px; text-align: center; }
 
         td > span { 
             color: #36064D;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%; /* Dias circulares para suavidade */
+            width: 36px;
+            height: 36px;
+            border-radius: 50%; 
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        /* Dia de Hoje - Usando o Vermelho de forma pontual */
+        /* Dia de Hoje - Vermelho vibrante */
         td.avui > span { 
             background-color: #DA4848; 
             color: #F7F6E5 !important; 
             font-weight: 700;
-            box-shadow: 0 4px 8px rgba(218, 72, 72, 0.3);
+            box-shadow: 0 4px 10px rgba(218, 72, 72, 0.3);
         }
 
-        /* Dias fora do mês */
-        td.fora > span { color: #D1D0BF; }
+        td.fora > span { color: #D1D0BF; opacity: 0.5; }
 
-        /* Botões Minimalistas */
         .boto-next, .boto-prev {
-            background: transparent;
+            background: #76D2DB; /* Botões em Azul Água */
             color: #36064D;
-            border: 1px solid rgba(54, 6, 77, 0.1);
+            border: none;
             border-radius: 8px;
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: 0.2s;
         }
 
         .boto-next:hover, .boto-prev:hover {
-            background: rgba(54, 6, 77, 0.05);
+            background: #36064D;
+            color: #F7F6E5;
         }
     </style>
 </head>
@@ -112,7 +114,8 @@
 
     <script>
         var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
-        var days_abr = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+        // Ajustado para 3 letras conforme seu pedido
+        var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
         function calendar(widget, data) {
             widget.innerHTML = '';
@@ -120,7 +123,6 @@
             widget.appendChild(e);
 
             var headRow = document.createElement('tr');
-            headRow.className = 'month-header-row';
             var headCell = document.createElement('th');
             headCell.setAttribute('colspan', 7);
             
