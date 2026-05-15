@@ -21,22 +21,22 @@
         table {
             border-collapse: separate;
             border-spacing: 0;
-            background-color: #fbf9f6;
+            background-color: #fcfaf7;
             border-radius: 16px;
             overflow: hidden;
             width: 340px;
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-            border: 1px solid #a9b3be;
+            border: 1px solid #e3dacd;
         }
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 18px 20px;
-            background-color: #66819b; /* Azul como fundo principal do topo */
+            background-color: #f1eae2;
         }
         .month {
-            color: #fbf9f6; /* Texto claro para contraste no fundo azul */
+            color: #aa7561;
             font-size: 1.3em;
             font-weight: 800;
             text-transform: capitalize;
@@ -46,18 +46,17 @@
         }
         .year {
             font-size: 1em;
-            color: #fbf9f6;
+            color: #aa7561;
             font-weight: 800;
-            opacity: 0.7;
+            opacity: 0.6;
         }
         .day-header {
-            background-color: #a9b3be; /* Cinza-azulado para a faixa de dias */
-            color: #191919;
+            background-color: #66819b; /* O azul aplicado na faixa de dias */
+            color: #fbf9f6;
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             padding: 12px 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         td {
             padding: 6px 4px;
@@ -75,17 +74,17 @@
             font-weight: 600;
         }
         td.avui > span {
-            background-color: #66819b; /* Azul destacando o dia atual */
+            background-color: #aa7561;
             color: #fbf9f6 !important;
             font-weight: 800;
-            box-shadow: 0 4px 10px rgba(102, 129, 155, 0.4);
+            box-shadow: 0 4px 10px rgba(170, 117, 97, 0.4);
         }
         td.fora > span {
-            color: #a9b3be;
-            opacity: 0.6;
+            color: #a9b3be; /* Cinza-azulado para dias fora do mês */
+            opacity: 0.8;
         }
         .boto-next, .boto-prev {
-            background: #aa7561; /* Terracota mantém o contraste nos botões */
+            background: #aa7561;
             color: #fbf9f6;
             border: none;
             border-radius: 8px;
@@ -100,7 +99,7 @@
             transition: 0.2s;
         }
         .boto-next:hover, .boto-prev:hover {
-            background: #4a3b32;
+            background: #66819b; /* Transição para o azul no hover */
             color: #fbf9f6;
         }
     </style>
