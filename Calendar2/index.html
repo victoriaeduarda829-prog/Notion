@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Language Study Dashboard - Slate Style</title>
+    <title>Language Study Dashboard</title>
     <style>
         body {
             font-family: 'Inter', -apple-system, sans-serif;
@@ -13,32 +13,29 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
-
         #calendar {
             zoom: 0.7;
         }
-
         table {
             border-collapse: separate;
             border-spacing: 0;
-            background-color: #a5afba;
+            background-color: #e6d0b9;
             border-radius: 16px;
             overflow: hidden;
             width: 340px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(78, 13, 18, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid #a9b3be;
         }
-
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px 20px;
         }
-
         .month {
-            color: #4e0d12;
+            color: #644228;
             font-size: 1.3em;
             font-weight: 800;
             text-transform: capitalize;
@@ -46,31 +43,27 @@
             align-items: center;
             gap: 8px;
         }
-
         .year {
             font-size: 1em;
-            color: #4e0d12;
+            color: #644228;
             font-weight: 800;
             opacity: 0.6;
         }
-
         .day-header {
-            background-color: #6f8ca6;
-            color: #191919;
+            background-color: #66819b;
+            color: #e6d0b9;
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             padding: 12px 0;
-            border-bottom: 1px solid rgba(78, 13, 18, 0.1);
+            border-bottom: 1px solid #a9b3be;
         }
-
         td {
             padding: 4px;
             text-align: center;
         }
-
         td > span {
-            color: #191919;
+            color: #644228;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -80,23 +73,18 @@
             font-size: 13px;
             font-weight: 600;
         }
-
         td.avui > span {
-            background-color: #4e0d12;
-            color: #a5afba !important;
+            background-color: #644228;
+            color: #e6d0b9 !important;
             font-weight: 800;
-            box-shadow: 0 4px 10px rgba(78, 13, 18, 0.4);
+            box-shadow: 0 4px 10px rgba(100, 66, 40, 0.4);
         }
-
         td.fora > span {
-            color: #6f8ca6;
-            opacity: 0.6;
+            color: #a9b3be;
         }
-
-        .boto-next, 
-        .boto-prev {
-            background: #4e0d12;
-            color: #a5afba;
+        .boto-next, .boto-prev {
+            background: #644228;
+            color: #e6d0b9;
             border: none;
             border-radius: 8px;
             width: 30px;
@@ -109,36 +97,31 @@
             justify-content: center;
             transition: 0.2s;
         }
-
-        .boto-next:hover, 
-        .boto-prev:hover {
-            background: #6f8ca6;
-            color: #4e0d12;
+        .boto-next:hover, .boto-prev:hover {
+            background: #66819b;
+            color: #e6d0b9;
         }
     </style>
 </head>
 <body>
-
     <div id="calendar"></div>
-
     <script>
         var months = [
-            'january', 'february', 'march', 'april', 'may', 'june', 
+            'january', 'february', 'march', 'april', 'may', 'june',
             'july', 'august', 'september', 'october', 'november', 'december'
         ];
-        
         var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        
+        var currentDatePointer = new Date();
 
         function calendar(widget, data) {
             widget.innerHTML = '';
-            
             var e = document.createElement('table');
             widget.appendChild(e);
 
             var headRow = document.createElement('tr');
             var headCell = document.createElement('th');
             headCell.setAttribute('colspan', 7);
-
             var navContainer = document.createElement('div');
             navContainer.className = 'nav-container';
 
@@ -146,8 +129,8 @@
             boto_prev.className = 'boto-prev';
             boto_prev.innerHTML = '‹';
             boto_prev.onclick = function() {
-                data.setMonth(data.getMonth() - 1);
-                calendar(widget, new Date(data));
+                currentDatePointer.setMonth(currentDatePointer.getMonth() - 1);
+                calendar(widget, currentDatePointer);
             };
 
             var titleDiv = document.createElement('div');
@@ -158,8 +141,8 @@
             boto_next.className = 'boto-next';
             boto_next.innerHTML = '›';
             boto_next.onclick = function() {
-                data.setMonth(data.getMonth() + 1);
-                calendar(widget, new Date(data));
+                currentDatePointer.setMonth(currentDatePointer.getMonth() + 1);
+                calendar(widget, currentDatePointer);
             };
 
             navContainer.appendChild(boto_prev);
@@ -177,10 +160,9 @@
 
             var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
             var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1);
-
+            
             for (var s = 0; s < 6; s++) {
                 var nova_fila = document.createElement('tr');
-                
                 for (var d = 0; d < 7; d++) {
                     var cela = document.createElement('td');
                     var span = document.createElement('span');
@@ -201,8 +183,7 @@
             }
         }
 
-        calendar(document.getElementById('calendar'), new Date());
+        calendar(document.getElementById('calendar'), currentDatePointer);
     </script>
-
 </body>
 </html>
