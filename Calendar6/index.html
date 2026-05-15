@@ -1,1 +1,216 @@
-<!DOCTYPE html><html lang="en"><head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Language Study Dashboard</title> <style> body { font-family: 'Inter', -apple-system, sans-serif; background-color: #191919; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; } #calendar { zoom: 0.7; } table { border-collapse: separate; border-spacing: 0; background-color: #ccd7c6; border-radius: 16px; overflow: hidden; width: 340px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 1px solid rgba(37, 150, 190, 0.2); } .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; } .month { color: #2596be; font-size: 1.3em; font-weight: 800; text-transform: capitalize; display: flex; align-items: center; gap: 8px; } .year { font-size: 1em; color: #2596be; font-weight: 800; } .day-header { background-color: rgba(242, 201, 180, 0.4); color: #2596be; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 12px 0; border-bottom: 1px solid rgba(37, 150, 190, 0.2); } td { padding: 4px; text-align: center; } td > span { color: #2596be; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; font-size: 13px; font-weight: 600; } td.avui > span { background-color: #f2c9b4; color: #2596be !important; font-weight: 800; box-shadow: 0 4px 10px rgba(242, 201, 180, 0.4); } td.fora > span { color: #2596be; opacity: 0.3; } .boto-next, .boto-prev { background: #2596be; color: #ccd7c6; border: none; border-radius: 8px; width: 30px; height: 30px; cursor: pointer; font-size: 18px; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: 0.2s; } .boto-next:hover, .boto-prev:hover { background: rgba(242, 201, 180, 0.5); color: #2596be; } </style></head><body> <div id="calendar"></div> <script> var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']; var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; function calendar(widget, data) { widget.innerHTML = ''; var e = document.createElement('table'); widget.appendChild(e); var headRow = document.createElement('tr'); var headCell = document.createElement('th'); headCell.setAttribute('colspan', 7); var navContainer = document.createElement('div'); navContainer.className = 'nav-container'; var boto_prev = document.createElement('button'); boto_prev.className = 'boto-prev'; boto_prev.innerHTML = '‹'; boto_prev.onclick = function() { data.setMonth(data.getMonth() - 1); calendar(widget, new Date(data)); }; var titleDiv = document.createElement('div'); titleDiv.className = 'month'; titleDiv.innerHTML = months[data.getMonth()] + ' <span class="year">' + data.getFullYear() + '</span>'; var boto_next = document.createElement('button'); boto_next.className = 'boto-next'; boto_next.innerHTML = '›'; boto_next.onclick = function() { data.setMonth(data.getMonth() + 1); calendar(widget, new Date(data)); }; navContainer.appendChild(boto_prev); navContainer.appendChild(titleDiv); navContainer.appendChild(boto_next); headCell.appendChild(navContainer); headRow.appendChild(headCell); e.appendChild(headRow); var fila_dias = document.createElement('tr'); for (var i = 0; i < 7; i++) { fila_dias.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>'; } e.appendChild(fila_dias); var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay(); var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1); for (var s = 0; s < 6; s++) { var nova_fila = document.createElement('tr'); for (var d = 0; d < 7; d++) { var cela = document.createElement('td'); var span = document.createElement('span'); span.innerHTML = actual.getDate(); if (actual.getMonth() !== data.getMonth()) cela.className = 'fora'; if (new Date().toDateString() === actual.toDateString()) cela.className = 'avui'; cela.appendChild(span); nova_fila.appendChild(cela); actual.setDate(actual.getDate() + 1); } e.appendChild(nova_fila); } } calendar(document.getElementById('calendar'), new Date()); </script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Study Dashboard</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #191919;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #calendar {
+            zoom: 0.7;
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: #f3edcd;
+            border-radius: 16px;
+            overflow: hidden;
+            width: 340px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(64, 55, 38, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .month {
+            color: #403726;
+            font-size: 1.3em;
+            font-weight: 800;
+            text-transform: capitalize;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .year {
+            font-size: 1em;
+            color: #403726;
+            font-weight: 800;
+            opacity: 0.6;
+        }
+
+        .day-header {
+            background-color: #d0ddd3;
+            color: #403726;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(64, 55, 38, 0.1);
+        }
+
+        td {
+            padding: 4px;
+            text-align: center;
+        }
+
+        td > span {
+            color: #403726;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        td.avui > span {
+            background-color: #d5999b;
+            color: #f3edcd !important;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(213, 153, 155, 0.4);
+        }
+
+        td.fora > span {
+            color: #403726;
+            opacity: 0.3;
+        }
+
+        .boto-next, 
+        .boto-prev {
+            background: #403726;
+            color: #f3edcd;
+            border: none;
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .boto-next:hover, 
+        .boto-prev:hover {
+            background: #d5999b;
+            color: #f3edcd;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="calendar"></div>
+
+    <script>
+        var months = [
+            'january', 'february', 'march', 'april', 'may', 'june', 
+            'july', 'august', 'september', 'october', 'november', 'december'
+        ];
+        
+        var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        function calendar(widget, data) {
+            widget.innerHTML = '';
+            
+            var e = document.createElement('table');
+            widget.appendChild(e);
+
+            // Cabeçalho de Navegação
+            var headRow = document.createElement('tr');
+            var headCell = document.createElement('th');
+            headCell.setAttribute('colspan', 7);
+
+            var navContainer = document.createElement('div');
+            navContainer.className = 'nav-container';
+
+            // Botão Anterior
+            var boto_prev = document.createElement('button');
+            boto_prev.className = 'boto-prev';
+            boto_prev.innerHTML = '‹';
+            boto_prev.onclick = function() {
+                data.setMonth(data.getMonth() - 1);
+                calendar(widget, new Date(data));
+            };
+
+            // Título (Mês e Ano)
+            var titleDiv = document.createElement('div');
+            titleDiv.className = 'month';
+            titleDiv.innerHTML = months[data.getMonth()] + ' <span class="year">' + data.getFullYear() + '</span>';
+
+            // Botão Próximo
+            var boto_next = document.createElement('button');
+            boto_next.className = 'boto-next';
+            boto_next.innerHTML = '›';
+            boto_next.onclick = function() {
+                data.setMonth(data.getMonth() + 1);
+                calendar(widget, new Date(data));
+            };
+
+            // Montagem do Cabeçalho
+            navContainer.appendChild(boto_prev);
+            navContainer.appendChild(titleDiv);
+            navContainer.appendChild(boto_next);
+            headCell.appendChild(navContainer);
+            headRow.appendChild(headCell);
+            e.appendChild(headRow);
+
+            // Linha dos Dias da Semana
+            var fila_dias = document.createElement('tr');
+            for (var i = 0; i < 7; i++) {
+                fila_dias.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>';
+            }
+            e.appendChild(fila_dias);
+
+            // Renderização dos Dias do Mês
+            var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
+            var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1);
+
+            for (var s = 0; s < 6; s++) {
+                var nova_fila = document.createElement('tr');
+                
+                for (var d = 0; d < 7; d++) {
+                    var cela = document.createElement('td');
+                    var span = document.createElement('span');
+                    span.innerHTML = actual.getDate();
+
+                    if (actual.getMonth() !== data.getMonth()) {
+                        cela.className = 'fora';
+                    }
+                    if (new Date().toDateString() === actual.toDateString()) {
+                        cela.className = 'avui';
+                    }
+
+                    cela.appendChild(span);
+                    nova_fila.appendChild(cela);
+                    actual.setDate(actual.getDate() + 1);
+                }
+                e.appendChild(nova_fila);
+            }
+        }
+
+        // Inicializa o calendário com a data atual
+        calendar(document.getElementById('calendar'), new Date());
+    </script>
+
+</body>
+</html>
