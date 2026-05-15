@@ -21,7 +21,7 @@
         table {
             border-collapse: separate;
             border-spacing: 0;
-            background-color: #fbf9f6; /* Fundo off-white aconchegante */
+            background-color: #fbf9f6;
             border-radius: 16px;
             overflow: hidden;
             width: 340px;
@@ -33,10 +33,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 18px 20px;
-            background-color: #f1eae2; /* Tom aveia suave para o topo */
+            background-color: #f1eae2;
         }
         .month {
-            color: #aa7561; /* Seu terracota em destaque principal */
+            color: #aa7561;
             font-size: 1.3em;
             font-weight: 800;
             text-transform: capitalize;
@@ -51,8 +51,8 @@
             opacity: 0.6;
         }
         .day-header {
-            background-color: #e3dacd; /* Faixa areia para os dias da semana */
-            color: #4a3b32; /* Marrom profundo para máxima legibilidade */
+            background-color: #66819b; /* O azul aplicado na faixa de dias */
+            color: #fbf9f6;
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
@@ -63,7 +63,7 @@
             text-align: center;
         }
         td > span {
-            color: #4a3b32; /* Números legíveis */
+            color: #4a3b32;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -74,14 +74,14 @@
             font-weight: 600;
         }
         td.avui > span {
-            background-color: #aa7561; /* Dia atual destacado em terracota */
+            background-color: #aa7561;
             color: #fbf9f6 !important;
             font-weight: 800;
             box-shadow: 0 4px 10px rgba(170, 117, 97, 0.4);
         }
         td.fora > span {
-            color: #c9bfb5; /* Dias fora do mês em tom esmaecido */
-            opacity: 0.6;
+            color: #a9b3be; /* Cinza-azulado para dias fora do mês */
+            opacity: 0.8;
         }
         .boto-next, .boto-prev {
             background: #aa7561;
@@ -99,7 +99,7 @@
             transition: 0.2s;
         }
         .boto-next:hover, .boto-prev:hover {
-            background: #4a3b32;
+            background: #66819b; /* Transição para o azul no hover */
             color: #fbf9f6;
         }
     </style>
@@ -188,4 +188,3 @@
     </script>
 </body>
 </html>
-
