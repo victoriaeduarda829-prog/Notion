@@ -3,133 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classic Blue Calendar - English</title>
+    <title>Language Study Dashboard - Clean Style</title>
     <style>
-        body { 
+        body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background-color: #191919; 
-            margin: 0; 
+            background-color: #191919;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
-        #calendar { zoom: 0.75; }
+        #calendar {
+            zoom: 0.7;
+        }
 
         table {
             border-collapse: separate;
-            border-spacing: 4px;
-            background-color: #EEEEEE; 
-            border-radius: 12px;
-            padding: 18px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-            border: 1px solid #1A4870;
+            border-spacing: 0;
+            background-color: #ddc1b5;
+            border-radius: 16px;
+            overflow: hidden;
+            width: 340px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(78, 13, 18, 0.1);
         }
 
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            padding: 15px 20px;
         }
 
-        .month { 
-            color: #1A4870; 
-            font-size: 1.25em; 
+        .month {
+            color: #4e0d12;
+            font-size: 1.3em;
             font-weight: 800;
-            text-transform: capitalize; /* Primeira letra maiúscula */
+            text-transform: capitalize;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .year { 
-            font-size: 11px; 
-            color: #5B7A96; 
-            font-weight: 500;
-            display: block;
-            letter-spacing: 0.5px;
+        .year {
+            font-size: 1em;
+            color: #4e0d12;
+            font-weight: 800;
+            opacity: 0.6;
         }
 
-        .day-header { 
-            color: #888888; 
-            font-size: 10px; 
+        .day-header {
+            background-color: #6f8ca6;
+            color: #ddc1b5;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            padding-bottom: 8px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(78, 13, 18, 0.1);
         }
 
-        td > span { 
-            color: #2D2D2D; 
+        td {
+            padding: 4px;
+            text-align: center;
+        }
+
+        td > span {
+            color: #4e0d12;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 35px;
-            height: 35px;
-            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        td.avui > span { 
-            background-color: #1A4870; 
-            color: #ffffff !important; 
-            box-shadow: 0 4px 12px rgba(26, 72, 112, 0.3);
+        td.avui > span {
+            background-color: #4e0d12;
+            color: #ddc1b5 !important;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(78, 13, 18, 0.4);
         }
 
-        td.fora > span { color: #BBBBBB; }
+        td.fora > span {
+            color: #a5afba;
+            opacity: 0.7;
+        }
 
-        .boto-next, .boto-prev {
-            background: #E0E0E0;
-            color: #1A4870;
-            border: 1px solid #D0D0D0;
-            border-radius: 6px;
-            width: 28px;
-            height: 28px;
+        .boto-next, 
+        .boto-prev {
+            background: #4e0d12;
+            color: #ddc1b5;
+            border: none;
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
             cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
+            transition: 0.2s;
         }
 
-        .boto-next:hover, .boto-prev:hover {
-            background: #1A4870;
-            color: #EEEEEE;
+        .boto-next:hover, 
+        .boto-prev:hover {
+            background: #a5afba;
+            color: #4e0d12;
         }
     </style>
 </head>
 <body>
+
     <div id="calendar"></div>
 
     <script>
-        // Nomes alterados para Inglês
-        var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        var months = [
+            'january', 'february', 'march', 'april', 'may', 'june', 
+            'july', 'august', 'september', 'october', 'november', 'december'
+        ];
+        
         var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
         function calendar(widget, data) {
             widget.innerHTML = '';
+            
             var e = document.createElement('table');
             widget.appendChild(e);
 
             var headRow = document.createElement('tr');
             var headCell = document.createElement('th');
             headCell.setAttribute('colspan', 7);
-            
+
             var navContainer = document.createElement('div');
             navContainer.className = 'nav-container';
 
             var boto_prev = document.createElement('button');
             boto_prev.className = 'boto-prev';
             boto_prev.innerHTML = '‹';
-            boto_prev.onclick = function() { data.setMonth(data.getMonth() - 1); calendar(widget, new Date(data)); };
+            boto_prev.onclick = function() {
+                data.setMonth(data.getMonth() - 1);
+                calendar(widget, new Date(data));
+            };
 
             var titleDiv = document.createElement('div');
             titleDiv.className = 'month';
-            titleDiv.innerHTML = months[data.getMonth()] + '<span class="year">' + data.getFullYear() + '</span>';
+            titleDiv.innerHTML = months[data.getMonth()] + ' <span class="year">' + data.getFullYear() + '</span>';
 
             var boto_next = document.createElement('button');
             boto_next.className = 'boto-next';
             boto_next.innerHTML = '›';
-            boto_next.onclick = function() { data.setMonth(data.getMonth() + 1); calendar(widget, new Date(data)); };
+            boto_next.onclick = function() {
+                data.setMonth(data.getMonth() + 1);
+                calendar(widget, new Date(data));
+            };
 
             navContainer.appendChild(boto_prev);
             navContainer.appendChild(titleDiv);
@@ -149,12 +180,19 @@
 
             for (var s = 0; s < 6; s++) {
                 var nova_fila = document.createElement('tr');
+                
                 for (var d = 0; d < 7; d++) {
                     var cela = document.createElement('td');
                     var span = document.createElement('span');
                     span.innerHTML = actual.getDate();
-                    if (actual.getMonth() !== data.getMonth()) cela.className = 'fora';
-                    if (new Date().toDateString() === actual.toDateString()) cela.className = 'avui';
+
+                    if (actual.getMonth() !== data.getMonth()) {
+                        cela.className = 'fora';
+                    }
+                    if (new Date().toDateString() === actual.toDateString()) {
+                        cela.className = 'avui';
+                    }
+
                     cela.appendChild(span);
                     nova_fila.appendChild(cela);
                     actual.setDate(actual.getDate() + 1);
@@ -165,6 +203,6 @@
 
         calendar(document.getElementById('calendar'), new Date());
     </script>
+
 </body>
 </html>
-
