@@ -16,23 +16,24 @@
             overflow: hidden;
         }
         #calendar {
-            zoom: 0.7;
+            zoom: 0.6;
         }
         table {
             border-collapse: separate;
             border-spacing: 0;
-            background-color: #e6d0b9;
+            background-color: #fcfaf7; /* Tom off-white suave para o fundo */
             border-radius: 16px;
             overflow: hidden;
             width: 340px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-            border: 1px solid #a9b3be;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid #e6d0b9;
         }
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            padding: 18px 20px;
+            background-color: #e6d0b9; /* Cabeçalho sutil */
         }
         .month {
             color: #644228;
@@ -50,16 +51,15 @@
             opacity: 0.6;
         }
         .day-header {
-            background-color: #66819b;
-            color: #e6d0b9;
+            background-color: #a9b3be; /* Cinza azulado para a faixa de dias */
+            color: #644228;
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             padding: 12px 0;
-            border-bottom: 1px solid #a9b3be;
         }
         td {
-            padding: 4px;
+            padding: 6px 4px;
             text-align: center;
         }
         td > span {
@@ -74,13 +74,14 @@
             font-weight: 600;
         }
         td.avui > span {
-            background-color: #644228;
-            color: #e6d0b9 !important;
+            background-color: #66819b; /* Azul em destaque para o dia atual */
+            color: #fcfaf7 !important;
             font-weight: 800;
-            box-shadow: 0 4px 10px rgba(100, 66, 40, 0.4);
+            box-shadow: 0 4px 10px rgba(102, 129, 155, 0.4);
         }
         td.fora > span {
             color: #a9b3be;
+            opacity: 0.5;
         }
         .boto-next, .boto-prev {
             background: #644228;
@@ -99,7 +100,7 @@
         }
         .boto-next:hover, .boto-prev:hover {
             background: #66819b;
-            color: #e6d0b9;
+            color: #fcfaf7;
         }
     </style>
 </head>
