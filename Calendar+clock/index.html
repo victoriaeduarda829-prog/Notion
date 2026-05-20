@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midnight Hour Calendar & Clock</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #0f111a;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #calendar {
+            zoom: 0.7;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: #121622;
+            border-radius: 16px;
+            overflow: hidden;
+            width: 340px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(102, 129, 155, 0.1);
+            border: 1px solid rgba(102, 129, 155, 0.15);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(180deg, #182032 0%, #121622 100%);
+            border-bottom: 1px solid rgba(102, 129, 155, 0.1);
+        }
+        .header-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .month {
+            color: #ffffff;
+            font-size: 1.25em;
+            font-weight: 700;
+            text-transform: capitalize;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+        }
+        .year {
+            font-size: 1em;
+            color: #a9b3be;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+        /* Estilização do Relógio Digital */
+        .digital-clock {
+            font-size: 0.9em;
+            color: #66819b; /* O azul principal que você escolheu */
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-variant-numeric: tabular-nums; /* Evita que os números fiquem tremendo ao mudar */
+        }
+        .day-header {
+            background-color: rgba(102, 129, 155, 0.05);
+            color: #a9b3be;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 12px 0;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(102, 129, 155, 0.1);
+        }
+        td {
+            padding: 6px 4px;
+            text-align: center;
+        }
+        td > span {
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+        td:not(.fora):not(.avui) > span:hover {
+            background-color: rgba(102, 129, 155, 0.2);
+            color: #ffffff;
+            cursor: pointer;
+        }
+        td.avui > span {
+            background-color: #66819b;
+            color: #ffffff !important;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(102, 129, 155, 0.4);
+        }
+        td.fora > span {
+            color: #a9b3be;
+            opacity: 0.3;
+        }
+        .boto-next, .boto-prev {
+            background: rgba(102, 129, 155, 0.15);
+            color: #ffffff;
+            border: 1px solid rgba(102, 129, 155, 0.25);
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .boto-next:hover, .boto-prev:hover {
+            background: #66819b;
+            border-color: #66819b;
+        }
+    </style>
+</head>
+<body>
+    <div id="calendar"></div>
+    <script>
+        var months = [
+            'january', 'february', 'march', 'april', 'may', 'june',
+            'july', 'august', 'september', 'october', 'november', 'december'
+        ];
+        var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        
+        var currentDatePointer = new Date();
+
+        function updateClock() {
+            var clockEl = document.getElementById('live-clock');
+            if (clockEl) {
+                var now = new Date();
+                var hours = String(now.getHours()).padStart(2, '0');
+                var minutes = String(now.getMinutes()).padStart(2, '0');
+                var seconds = String(now.getSeconds()).padStart(2, '0');
+                clockEl.innerHTML = hours + ':' + minutes + ':' + seconds;
+            }
+        }
+
+        function calendar(widget, data) {
+            widget.innerHTML = '';
+            var e = document.createElement('table');
+            widget.appendChild(e);
+
+            var headRow = document.createElement('tr');
+            var headCell = document.createElement('th');
+            headCell.setAttribute('colspan', 7);
+            var navContainer = document.createElement('div');
+            navContainer.className = 'nav-container';
+
+            var boto_prev = document.createElement('button');
+            boto_prev.className = 'boto-prev';
+            boto_prev.innerHTML = '‹';
+            boto_prev.onclick = function() {
+                currentDatePointer.setMonth(currentDatePointer.getMonth() - 1);
+                calendar(widget, currentDatePointer);
+            };
+
+            // Bloco centralizado contendo Mês/Ano e o Relógio
+            var headerCenter = document.createElement('div');
+            headerCenter.className = 'header-center';
+
+            var titleDiv = document.createElement('div');
+            titleDiv.className = 'month';
+            titleDiv.innerHTML = months[data.getMonth()] + ' <span class="year">' + data.getFullYear() + '</span>';
+
+            var clockDiv = document.createElement('div');
+            clockDiv.className = 'digital-clock';
+            clockDiv.id = 'live-clock';
+
+            headerCenter.appendChild(titleDiv);
+            headerCenter.appendChild(clockDiv);
+
+            var boto_next = document.createElement('button');
+            boto_next.className = 'boto-next';
+            boto_next.innerHTML = '›';
+            boto_next.onclick = function() {
+                currentDatePointer.setMonth(currentDatePointer.getMonth() + 1);
+                calendar(widget, currentDatePointer);
+            };
+
+            navContainer.appendChild(boto_prev);
+            navContainer.appendChild(headerCenter);
+            navContainer.appendChild(boto_next);
+            headCell.appendChild(navContainer);
+            headRow.appendChild(headCell);
+            e.appendChild(headRow);
+
+            var fila_dias = document.createElement('tr');
+            for (var i = 0; i < 7; i++) {
+                fila_dias.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>';
+            }
+            e.appendChild(fila_dias);
+
+            var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
+            var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1);
+            
+            for (var s = 0; s < 6; s++) {
+                var nova_fila = document.createElement('tr');
+                for (var d = 0; d < 7; d++) {
+                    var cela = document.createElement('td');
+                    var span = document.createElement('span');
+                    span.innerHTML = actual.getDate();
+
+                    if (actual.getMonth() !== data.getMonth()) {
+                        cela.className = 'fora';
+                    }
+                    if (new Date().toDateString() === actual.toDateString()) {
+                        cela.className = 'avui';
+                    }
+
+                    cela.appendChild(span);
+                    nova_fila.appendChild(cela);
+                    actual.setDate(actual.getDate() + 1);
+                }
+                e.appendChild(nova_fila);
+            }
+
+            // Inicia e força a atualização do relógio imediatamente após renderizar
+            updateClock();
+        }
+
+        calendar(document.getElementById('calendar'), currentDatePointer);
+        
+        // Mantém o relógio rodando a cada segundo em tempo real
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
