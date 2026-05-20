@@ -1,34 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Mode Calendar</title>
-    <style>
-        /* Ajustado para o Dark Mode do Notion */
-        body { 
-            font-family: 'Inter', -apple-system, sans-serif; 
-            background-color: #191919; /* Cor exata do fundo dark do Notion */
-            margin: 0; 
-            display: flex;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        #calendar { margin-top: 10px; zoom: 0.7; }
-
-        table {
-            border-collapse: separate;
-            border-spacing: 4px;<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midnight Calendar Widget</title>
+    <title>Midnight Hour Calendar</title>
     <style>
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background-color: #0f111a; /* Fundo idêntico ao dark mode profundo do Notion */
+            background-color: #0f111a; /* Escuro profundo */
             margin: 0;
             display: flex;
             justify-content: center;
@@ -42,24 +21,25 @@
         table {
             border-collapse: separate;
             border-spacing: 0;
-            background-color: #1a1d29; /* Azul meia-noite fechado */
-            border-radius: 20px;
+            background-color: #121622; /* Azul meia-noite fosco e sóbrio */
+            border-radius: 16px;
             overflow: hidden;
             width: 340px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background: linear-gradient(180deg, #1e2235 0%, #1a1d29 100%);
+            background-color: #161b2b; /* Variação sutil para o topo */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
         .month {
-            color: #ffffff;
-            font-size: 1.3em;
-            font-weight: 800;
+            color: #e2e8f0; /* Branco lunar suave */
+            font-size: 1.25em;
+            font-weight: 700;
             text-transform: capitalize;
             display: flex;
             align-items: center;
@@ -68,17 +48,16 @@
         }
         .year {
             font-size: 1em;
-            color: #4f5b7c; /* Azul acinzentado sutil */
+            color: #4a5568; /* Cinza-azulado escuro */
             font-weight: 600;
         }
         .day-header {
-            background-color: rgba(255, 255, 255, 0.02);
-            color: #51628d; /* Azul muted para os dias da semana */
+            background-color: transparent;
+            color: #475569; /* Dias da semana discretos */
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 14px 0 8px 0;
             letter-spacing: 1px;
         }
         td {
@@ -86,7 +65,7 @@
             text-align: center;
         }
         td > span {
-            color: #a6b2d1; /* Azul elétrico bem claro/desbotado para leitura */
+            color: #94a3b8; /* Texto padrão em tom ardósia claro */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -94,44 +73,42 @@
             height: 36px;
             border-radius: 50%;
             font-size: 13px;
-            font-weight: 600;
-            transition: 0.2s;
+            font-weight: 500;
+            transition: 0.2s ease;
         }
-        /* Efeito de brilho de neon sutil ao passar o mouse */
+        /* Efeito de seleção sutil ao passar o mouse */
         td:not(.fora):not(.avui) > span:hover {
-            background-color: rgba(0, 212, 255, 0.1);
-            color: #00d4ff;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #f1f5f9;
             cursor: pointer;
         }
         td.avui > span {
-            background-color: #00d4ff; /* Azul Ciano Neon (A hora mais brilhante da noite) */
-            color: #0f111a !important;
-            font-weight: 800;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+            background-color: #3b82f6; /* Azul clássico e profundo (Royal/Safira) */
+            color: #ffffff !important;
+            font-weight: 700;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3); /* Brilho interno contido */
         }
         td.fora > span {
-            color: #31384e; /* Sumegindo no fundo escuro */
+            color: #1e293b; /* Dias fora do mês quase sumindo no fundo */
         }
         .boto-next, .boto-prev {
-            background: #252a3c;
-            color: #a6b2d1;
-            border: none;
-            border-radius: 10px;
-            width: 32px;
-            height: 32px;
+            background: rgba(255, 255, 255, 0.03);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
             cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .boto-next:hover, .boto-prev:hover {
-            background: #00d4ff;
-            color: #0f111a;
-            box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.15);
         }
     </style>
 </head>
