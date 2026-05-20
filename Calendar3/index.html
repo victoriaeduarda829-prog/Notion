@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background-color: #0f111a; /* Escuro profundo */
+            background-color: #0f111a;
             margin: 0;
             display: flex;
             justify-content: center;
@@ -21,23 +21,23 @@
         table {
             border-collapse: separate;
             border-spacing: 0;
-            background-color: #121622; /* Azul meia-noite fosco e sóbrio */
+            background-color: #121622; /* Fundo meia-noite fosco */
             border-radius: 16px;
             overflow: hidden;
             width: 340px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(102, 129, 155, 0.1);
+            border: 1px solid rgba(102, 129, 155, 0.15);
         }
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background-color: #161b2b; /* Variação sutil para o topo */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            background: linear-gradient(180deg, #182032 0%, #121622 100%); /* Transição suave para o azul profundo */
+            border-bottom: 1px solid rgba(102, 129, 155, 0.1);
         }
         .month {
-            color: #e2e8f0; /* Branco lunar suave */
+            color: #ffffff;
             font-size: 1.25em;
             font-weight: 700;
             text-transform: capitalize;
@@ -48,24 +48,26 @@
         }
         .year {
             font-size: 1em;
-            color: #4a5568; /* Cinza-azulado escuro */
+            color: #a9b3be; /* O cinza-azulado que você curtiu no ano */
             font-weight: 600;
+            opacity: 0.7;
         }
         .day-header {
-            background-color: transparent;
-            color: #475569; /* Dias da semana discretos */
+            background-color: rgba(102, 129, 155, 0.05); /* Faixa sutil usando o seu azul */
+            color: #a9b3be; /* Dias da semana com o cinza-azulado */
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
-            padding: 14px 0 8px 0;
+            padding: 12px 0;
             letter-spacing: 1px;
+            border-bottom: 1px solid rgba(102, 129, 155, 0.1);
         }
         td {
             padding: 6px 4px;
             text-align: center;
         }
         td > span {
-            color: #94a3b8; /* Texto padrão em tom ardósia claro */
+            color: #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -73,28 +75,28 @@
             height: 36px;
             border-radius: 50%;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             transition: 0.2s ease;
         }
-        /* Efeito de seleção sutil ao passar o mouse */
         td:not(.fora):not(.avui) > span:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #f1f5f9;
+            background-color: rgba(102, 129, 155, 0.2);
+            color: #ffffff;
             cursor: pointer;
         }
         td.avui > span {
-            background-color: #3b82f6; /* Azul clássico e profundo (Royal/Safira) */
+            background-color: #66819b; /* O azul do modelo anterior destacando o dia atual */
             color: #ffffff !important;
-            font-weight: 700;
-            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3); /* Brilho interno contido */
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(102, 129, 155, 0.4);
         }
         td.fora > span {
-            color: #1e293b; /* Dias fora do mês quase sumindo no fundo */
+            color: #a9b3be; /* Dias fora do mês usando o cinza-azulado com opacidade baixa */
+            opacity: 0.3;
         }
         .boto-next, .boto-prev {
-            background: rgba(255, 255, 255, 0.03);
-            color: #94a3b8;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(102, 129, 155, 0.15);
+            color: #ffffff;
+            border: 1px solid rgba(102, 129, 155, 0.25);
             border-radius: 8px;
             width: 30px;
             height: 30px;
@@ -106,9 +108,8 @@
             transition: 0.2s;
         }
         .boto-next:hover, .boto-prev:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.15);
+            background: #66819b;
+            border-color: #66819b;
         }
     </style>
 </head>
