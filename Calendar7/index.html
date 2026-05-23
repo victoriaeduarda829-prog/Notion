@@ -16,28 +16,28 @@
             overflow: hidden;
         }
         #calendar {
-            zoom: 0.7;
+            zoom: 0.68;
         }
         table {
             border-collapse: separate;
             border-spacing: 0;
-            background-color: #221a14; /* Marrom Espresso rico e profundo (Principal) */
+            background-color: #221a14; /* Marrom Espresso rico e profundo */
             border-radius: 16px;
             overflow: hidden;
             width: 340px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            border: 1px solid #33271e; /* Borda sutil em tom marrom */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra reduzida e muito mais sutil */
+            border: 1px solid #33271e;
         }
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background-color: #1a130e; /* Cabeçalho em tom marrom ainda mais profundo */
+            background-color: #1a130e;
             border-bottom: 1px solid #281e17;
         }
         .month {
-            color: #ebdcd0; /* Texto em tom de pergaminho/marfim aquecido */
+            color: #ebdcd0;
             font-size: 1.25em;
             font-weight: 700;
             text-transform: capitalize;
@@ -48,12 +48,12 @@
         }
         .year {
             font-size: 1em;
-            color: #8c7361; /* Marrom muted para o ano */
+            color: #8c7361;
             font-weight: 600;
         }
         .day-header {
             background-color: #1c1510;
-            color: #556982; /* Azul midnight fosco e discreto nos dias da semana */
+            color: #556982; /* Azul midnight fosco */
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
@@ -65,7 +65,7 @@
             text-align: center;
         }
         td > span {
-            color: #c4b4a7; /* Números em tom areia escuro para leitura confortável */
+            color: #c4b4a7;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -76,7 +76,6 @@
             font-weight: 600;
             transition: 0.2s ease;
         }
-        /* Hover translúcido simulando uma névoa azul da meia-noite */
         td:not(.fora):not(.avui) > span:hover {
             background-color: rgba(36, 48, 66, 0.4);
             color: #a3b8cc;
@@ -86,14 +85,14 @@
             background-color: #243042; /* Azul Midnight Fosco no dia atual */
             color: #ffffff !important;
             font-weight: 800;
-            box-shadow: 0 4px 12px rgba(36, 48, 66, 0.4);
-            border: 1px solid #36475e; /* Fina linha azulada de acabamento */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Sombra do indicador também reduzida */
+            border: 1px solid #36475e;
         }
         td.fora > span {
-            color: #3d2f25; /* Dias fora do mês quase ocultos no fundo marrom */
+            color: #3d2f25;
         }
         .boto-next, .boto-prev {
-            background: #3d2f25; /* Botões integrados ao marrom principal */
+            background: #3d2f25;
             color: #ebdcd0;
             border: 1px solid #4a392d;
             border-radius: 8px;
@@ -107,7 +106,7 @@
             transition: 0.2s;
         }
         .boto-next:hover, .boto-prev:hover {
-            background: #243042; /* Transiciona para o azul midnight no hover */
+            background: #243042;
             border-color: #36475e;
             color: #ffffff;
         }
