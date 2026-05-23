@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Archive - Life Progress</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #191919; /* Cor exata do modo escuro do Notion */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .progress-container {
+            zoom: 0.7;
+            background-color: #221a14; /* Marrom Espresso do seu Acervo */
+            border-radius: 16px;
+            width: 340px;
+            padding: 24px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid #33271e;
+            box-sizing: border-box;
+        }
+        .widget-header {
+            margin-bottom: 20px;
+            text-align: left;
+            border-bottom: 1px solid #281e17;
+            padding-bottom: 10px;
+        }
+        .widget-title {
+            color: #ebdcd0; /* Tom marfim/pergaminho */
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        /* Estrutura de cada barra */
+        .progress-section {
+            margin-bottom: 18px;
+        }
+        .progress-section:last-child {
+            margin-bottom: 0;
+        }
+        .label-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .progress-label {
+            color: #8c7361; /* Marrom muted */
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .progress-percentage {
+            color: #a9b3be; /* Cinza-azulado fosco */
+            font-family: 'SFMono-Regular', Consolas, monospace; /* Alinhamento numérico fixo */
+            font-size: 11px;
+            font-weight: 700;
+        }
+        /* Trilhas e preenchimentos */
+        .bar-track {
+            background-color: #1a130e; /* Fundo escuro da barra */
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            width: 100%;
+            border: 1px solid #281e17;
+        }
+        .bar-fill {
+            background-color: #243042; /* Azul Midnight Fosco como progresso */
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.5s ease-out; /* Animação suave ao carregar */
+        }
+        /* Destaque sutil para a barra do ano atual */
+        .year-section .bar-fill {
+            background-color: #66819b; /* O seu azul principal para a métrica macro */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container">
+        <div class="widget-header">
+            <div class="widget-title">Time Progress Archive</div>
+        </div>
+
+        <!-- Progresso do Dia -->
+        <div class="progress-section">
+            <div class="label-container">
+                <div class="progress-label">Today</div>
+                <div class="progress-percentage" id="day-pct">0%</div>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill" id="day-bar"></div>
+            </div>
+        </div>
+
+        <!-- Progresso do Mês -->
+        <div class="progress-section">
+            <div class="label-container">
+                <div class="progress-label">This Month</div>
+                <div class="progress-percentage" id="month-pct">0%</div>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill" id="month-bar"></div>
+            </div>
+        </div>
+
+        <!-- Progresso do Ano -->
+        <div class="progress-section year-section">
+            <div class="label-container">
+                <div class="progress-label">This Year</div>
+                <div class="progress-percentage" id="year-pct">0%</div>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill" id="year-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateProgress() {
+            const now = new Date();
+
+            // 1. Cálculo do Dia
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const diffDay = now - startOfDay;
+            const dayProgress = (diffDay / (24 * 60 * 60 * 1000)) * 100;
+
+            // 2. Cálculo do Mês
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+            const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            const totalDaysInMonth = endOfMonth.getDate();
+            const diffMonth = now - startOfMonth;
+            const monthProgress = (diffMonth / (totalDaysInMonth * 24 * 60 * 60 * 1000)) * 100;
+
+            // 3. Cálculo do Ano
+            const startOfYear = new Date(now.getFullYear(), 0, 1);
+            const endOfYear = new Date(now.getFullYear() + 1, 0, 1);
+            const totalTimeInYear = endOfYear - startOfYear;
+            const diffYear = now - startOfYear;
+            const yearProgress = (diffYear / totalTimeInYear) * 100;
+
+            // Atualiza o DOM (Interface)
+            updateBar('day', dayProgress);
+            updateBar('month', monthProgress);
+            updateBar('year', yearProgress);
+        }
+
+        function updateBar(id, progress) {
+            const percentage = progress.toFixed(1); // Exibe uma casa decimal para precisão fluida
+            document.getElementById(`${id}-pct`).textContent = `${percentage}%`;
+            document.getElementById(`${id}-bar`).style.width = `${percentage}%`;
+        }
+
+        // Executa imediatamente e atualiza a cada 30 segundos de forma leve
+        calculateProgress();
+        setInterval(calculateProgress, 30000);
+    </script>
+</body>
+</html>
