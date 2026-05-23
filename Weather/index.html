@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Archive - Minimal Weather</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #191919; /* Cor exata do modo escuro do Notion */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .weather-container {
+            zoom: 0.7;
+            background-color: #221a14; /* Marrom Espresso do seu Acervo */
+            border-radius: 16px;
+            width: 340px;
+            padding: 24px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid #33271e;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        /* Dados Principais (Lado Esquerdo) */
+        .weather-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: left;
+        }
+        .weather-title {
+            color: #8c7361; /* Marrom muted */
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .temperature-display {
+            font-size: 3.5em;
+            font-weight: 800;
+            color: #ebdcd0; /* Tom marfim/pergaminho */
+            line-height: 1;
+            margin: 4px 0;
+            font-variant-numeric: tabular-nums;
+        }
+        .weather-condition {
+            color: #a9b3be; /* Cinza-azulado fosco */
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+        /* Status Extras (Lado Direito Superior) */
+        .weather-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+            font-family: 'SFMono-Regular', Consolas, monospace; /* Toque mono do Acervo */
+            font-size: 11px;
+            color: #556982; /* Azul midnight sutil */
+            font-weight: 700;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .meta-value {
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="weather-container">
+        <!-- Bloco de Clima Principal -->
+        <div class="weather-info">
+            <div class="weather-title">Current Weather</div>
+            <div class="temperature-display" id="temp">--°</div>
+            <div class="weather-condition" id="condition">Loading...</div>
+        </div>
+
+        <!-- Dados Secundários Extras -->
+        <div class="weather-meta">
+            <div class="meta-item">
+                <span>WIND:</span>
+                <span class="meta-value" id="wind">-- km/h</span>
+            </div>
+            <div class="meta-item">
+                <span>HUMIDITY:</span>
+                <span class="meta-value" id="humidity">--%</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURAÇÃO DA SUA LOCALIZAÇÃO
+        // Substitua pelos dados da sua cidade se desejar:
+        const LATITUDE = -5.921;  
+        const LONGITUDE = -35.213;  
+
+        // Tabela de códigos meteorológicos oficiais (WMO) convertidos para texto simples
+        const weatherCodes = {
+            0: "Clear Sky",
+            1: "Mainly Clear", 2: "Partly Cloudy", 3: "Overcast",
+            45: "Foggy", 48: "Depositing Rime Fog",
+            51: "Light Drizzle", 53: "Moderate Drizzle", 55: "Dense Drizzle",
+            61: "Slight Rain", 63: "Moderate Rain", 65: "Heavy Rain",
+            71: "Slight Snow", 73: "Moderate Snow", 75: "Heavy Snow",
+            77: "Snow Grains",
+            80: "Slight Showers", 81: "Moderate Showers", 82: "Violent Showers",
+            85: "Slight Snow Showers", 86: "Heavy Snow Showers",
+            95: "Thunderstorm", 96: "Thunderstorm / Hail", 99: "Thunderstorm / Heavy Hail"
+        };
+
+        async function fetchWeather() {
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${LATITUDE}&longitude=${LONGITUDE}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m`;
+                const response = await fetch(url);
+                
+                if (!response.ok) throw new Error("API Network error");
+                
+                const data = await response.json();
+                
+                // Extração dos dados dinâmicos da API
+                const temp = Math.round(data.current.temperature_2m);
+                const code = data.current.weather_code;
+                const wind = Math.round(data.current.wind_speed_10m);
+                const humidity = data.current.relative_humidity_2m;
+
+                // Atualização dos elementos na Tela
+                document.getElementById('temp').textContent = `${temp}°`;
+                document.getElementById('condition').textContent = weatherCodes[code] || "Unknown";
+                document.getElementById('wind').textContent = `${wind} km/h`;
+                document.getElementById('humidity').textContent = `${humidity}%`;
+
+            } catch (error) {
+                console.error("Error loading weather data:", error);
+                document.getElementById('condition').textContent = "Offline";
+            }
+        }
+
+        // Executa a busca ao carregar a página
+        fetchWeather();
+
+        // Atualiza os dados de forma inteligente a cada 15 minutos (sem pesar a página)
+        setInterval(fetchWeather, 900000);
+    </script>
+</body>
+</html>
