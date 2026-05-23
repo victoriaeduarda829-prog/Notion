@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background-color: #0f111a; /* Fundo escuro profundo para o Notion */
+            background-color: #191919; /* Cor exata do modo escuro do Notion */
             margin: 0;
             display: flex;
             justify-content: center;
@@ -21,23 +21,23 @@
         table {
             border-collapse: separate;
             border-spacing: 0;
-            background-color: #2b1d16; /* Marrom profundo e sóbrio como cor principal */
+            background-color: #221a14; /* Marrom Espresso rico e profundo (Principal) */
             border-radius: 16px;
             overflow: hidden;
             width: 340px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 15px rgba(18, 22, 34, 0.5);
-            border: 1px solid rgba(102, 129, 155, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid #33271e; /* Borda sutil em tom marrom */
         }
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background: linear-gradient(180deg, #3a281e 0%, #2b1d16 100%); /* Degradê marrom acadêmico */
-            border-bottom: 1px solid rgba(102, 129, 155, 0.15);
+            background-color: #1a130e; /* Cabeçalho em tom marrom ainda mais profundo */
+            border-bottom: 1px solid #281e17;
         }
         .month {
-            color: #f1f5f9; /* Branco lunar suave */
+            color: #ebdcd0; /* Texto em tom de pergaminho/marfim aquecido */
             font-size: 1.25em;
             font-weight: 700;
             text-transform: capitalize;
@@ -48,26 +48,24 @@
         }
         .year {
             font-size: 1em;
-            color: #a9b3be; /* Cinza-azulado fosco */
+            color: #8c7361; /* Marrom muted para o ano */
             font-weight: 600;
-            opacity: 0.7;
         }
         .day-header {
-            background-color: #121622; /* Azul escuro fosco (Midnight Hour) dividindo a tabela */
-            color: #a9b3be; /* Letras em cinza-azulado */
+            background-color: #1c1510;
+            color: #556982; /* Azul midnight fosco e discreto nos dias da semana */
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            padding: 12px 0;
+            padding: 14px 0 10px 0;
             letter-spacing: 1px;
-            border-bottom: 1px solid rgba(102, 129, 155, 0.1);
         }
         td {
             padding: 6px 4px;
             text-align: center;
         }
         td > span {
-            color: #e2e8f0; /* Números claros sobre o fundo marrom */
+            color: #c4b4a7; /* Números em tom areia escuro para leitura confortável */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -78,27 +76,26 @@
             font-weight: 600;
             transition: 0.2s ease;
         }
-        /* Hover com o tom azul fosco da meia-noite */
+        /* Hover translúcido simulando uma névoa azul da meia-noite */
         td:not(.fora):not(.avui) > span:hover {
-            background-color: #161f33; 
-            color: #ffffff;
+            background-color: rgba(36, 48, 66, 0.4);
+            color: #a3b8cc;
             cursor: pointer;
         }
         td.avui > span {
-            background-color: #1a233a; /* Azul escuro fosco bem Midnight para destacar o dia atual */
+            background-color: #243042; /* Azul Midnight Fosco no dia atual */
             color: #ffffff !important;
             font-weight: 800;
-            border: 1px solid #66819b; /* Borda fina azulada para dar acabamento */
-            box-shadow: 0 4px 12px rgba(18, 22, 34, 0.5);
+            box-shadow: 0 4px 12px rgba(36, 48, 66, 0.4);
+            border: 1px solid #36475e; /* Fina linha azulada de acabamento */
         }
         td.fora > span {
-            color: #1a1512; /* Dias fora do mês quase sumindo no fundo marrom */
-            opacity: 0.4;
+            color: #3d2f25; /* Dias fora do mês quase ocultos no fundo marrom */
         }
         .boto-next, .boto-prev {
-            background: #121622; /* Botões no azul midnight fosco */
-            color: #ffffff;
-            border: 1px solid rgba(102, 129, 155, 0.2);
+            background: #3d2f25; /* Botões integrados ao marrom principal */
+            color: #ebdcd0;
+            border: 1px solid #4a392d;
             border-radius: 8px;
             width: 30px;
             height: 30px;
@@ -110,8 +107,9 @@
             transition: 0.2s;
         }
         .boto-next:hover, .boto-prev:hover {
-            background: #1a233a;
-            border-color: #66819b;
+            background: #243042; /* Transiciona para o azul midnight no hover */
+            border-color: #36475e;
+            color: #ffffff;
         }
     </style>
 </head>
