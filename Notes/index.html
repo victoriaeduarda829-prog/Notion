@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Archive - Sticky Note</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #191919; /* Cor exata do modo escuro do Notion */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .note-container {
+            zoom: 0.7;
+            background-color: #221a14; /* Marrom Espresso do seu Acervo */
+            border-radius: 16px;
+            width: 340px;
+            height: 320px;
+            padding: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid #33271e;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        /* Cabeçalho do Bloco de Notas */
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: #1a130e; /* Marrom profundo */
+            border-bottom: 1px solid #281e17;
+        }
+        .note-title {
+            color: #ebdcd0; /* Tom marfim/pergaminho */
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        /* Indicador de Salvamento Automático */
+        .save-status {
+            font-size: 10px;
+            color: #556982; /* Azul midnight sutil */
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+        .save-status.saving {
+            color: #a9b3be;
+        }
+        /* Área de Texto */
+        .note-textarea {
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            padding: 20px;
+            color: #c4b4a7; /* Tom areia escuro confortável para leitura */
+            font-size: 14px;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        /* Customização da barra de rolagem para combinar com o tema */
+        .note-textarea::-webkit-scrollbar {
+            width: 6px;
+        }
+        .note-textarea::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .note-textarea::-webkit-scrollbar-thumb {
+            background: #3d2f25;
+            border-radius: 3px;
+        }
+        .note-textarea::-webkit-scrollbar-thumb:hover {
+            background: #243042; /* Azul Midnight no hover do scroll */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="note-container">
+        <div class="note-header">
+            <div class="note-title">Quick Archive Notes</div>
+            <div class="save-status" id="status">Synced</div>
+        </div>
+        <textarea 
+            class="note-textarea" 
+            id="note-input" 
+            placeholder="Type your temporary insights, book quotes, or quick reminders here..."
+        ></textarea>
+    </div>
+
+    <script>
+        const textarea = document.getElementById('note-input');
+        const statusEl = document.getElementById('status');
+        let saveTimeout;
+
+        // Carrega a nota salva anteriormente, se existir
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedNote = localStorage.getItem('archive_sticky_note');
+            if (savedNote) {
+                textarea.value = savedNote;
+            }
+        });
+
+        // Monitora a digitação e aciona o salvamento automático com 'debounce'
+        textarea.addEventListener('input', () => {
+            statusEl.textContent = 'Saving...';
+            statusEl.classList.add('saving');
+
+            // Cancela o timer anterior para não sobrecarregar o salvamento
+            clearTimeout(saveTimeout);
+
+            // Aguarda 500ms sem digitar para salvar efetivamente
+            saveTimeout = setTimeout(() => {
+                localStorage.setItem('archive_sticky_note', textarea.value);
+                statusEl.textContent = 'Synced';
+                statusEl.classList.remove('saving');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
