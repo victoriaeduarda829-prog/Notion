@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Archive Calendar</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #0f111a; /* Fundo escuro profundo para o Notion */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #calendar {
+            zoom: 0.7;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: #2b1d16; /* Marrom profundo e sóbrio como cor principal */
+            border-radius: 16px;
+            overflow: hidden;
+            width: 340px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 15px rgba(18, 22, 34, 0.5);
+            border: 1px solid rgba(102, 129, 155, 0.15);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(180deg, #3a281e 0%, #2b1d16 100%); /* Degradê marrom acadêmico */
+            border-bottom: 1px solid rgba(102, 129, 155, 0.15);
+        }
+        .month {
+            color: #f1f5f9; /* Branco lunar suave */
+            font-size: 1.25em;
+            font-weight: 700;
+            text-transform: capitalize;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+        .year {
+            font-size: 1em;
+            color: #a9b3be; /* Cinza-azulado fosco */
+            font-weight: 600;
+            opacity: 0.7;
+        }
+        .day-header {
+            background-color: #121622; /* Azul escuro fosco (Midnight Hour) dividindo a tabela */
+            color: #a9b3be; /* Letras em cinza-azulado */
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 12px 0;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(102, 129, 155, 0.1);
+        }
+        td {
+            padding: 6px 4px;
+            text-align: center;
+        }
+        td > span {
+            color: #e2e8f0; /* Números claros sobre o fundo marrom */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+        /* Hover com o tom azul fosco da meia-noite */
+        td:not(.fora):not(.avui) > span:hover {
+            background-color: #161f33; 
+            color: #ffffff;
+            cursor: pointer;
+        }
+        td.avui > span {
+            background-color: #1a233a; /* Azul escuro fosco bem Midnight para destacar o dia atual */
+            color: #ffffff !important;
+            font-weight: 800;
+            border: 1px solid #66819b; /* Borda fina azulada para dar acabamento */
+            box-shadow: 0 4px 12px rgba(18, 22, 34, 0.5);
+        }
+        td.fora > span {
+            color: #1a1512; /* Dias fora do mês quase sumindo no fundo marrom */
+            opacity: 0.4;
+        }
+        .boto-next, .boto-prev {
+            background: #121622; /* Botões no azul midnight fosco */
+            color: #ffffff;
+            border: 1px solid rgba(102, 129, 155, 0.2);
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .boto-next:hover, .boto-prev:hover {
+            background: #1a233a;
+            border-color: #66819b;
+        }
+    </style>
+</head>
+<body>
+    <div id="calendar"></div>
+    <script>
+        var months = [
+            'january', 'february', 'march', 'april', 'may', 'june',
+            'july', 'august', 'september', 'october', 'november', 'december'
+        ];
+        var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        
+        var currentDatePointer = new Date();
+
+        function calendar(widget, data) {
+            widget.innerHTML = '';
+            var e = document.createElement('table');
+            widget.appendChild(e);
+
+            var headRow = document.createElement('tr');
+            var headCell = document.createElement('th');
+            headCell.setAttribute('colspan', 7);
+            var navContainer = document.createElement('div');
+            navContainer.className = 'nav-container';
+
+            var boto_prev = document.createElement('button');
+            boto_prev.className = 'boto-prev';
+            boto_prev.innerHTML = '‹';
+            boto_prev.onclick = function() {
+                currentDatePointer.setMonth(currentDatePointer.getMonth() - 1);
+                calendar(widget, currentDatePointer);
+            };
+
+            var titleDiv = document.createElement('div');
+            titleDiv.className = 'month';
+            titleDiv.innerHTML = months[data.getMonth()] + ' <span class="year">' + data.getFullYear() + '</span>';
+
+            var boto_next = document.createElement('button');
+            boto_next.className = 'boto-next';
+            boto_next.innerHTML = '›';
+            boto_next.onclick = function() {
+                currentDatePointer.setMonth(currentDatePointer.getMonth() + 1);
+                calendar(widget, currentDatePointer);
+            };
+
+            navContainer.appendChild(boto_prev);
+            navContainer.appendChild(titleDiv);
+            navContainer.appendChild(boto_next);
+            headCell.appendChild(navContainer);
+            headRow.appendChild(headCell);
+            e.appendChild(headRow);
+
+            var fila_dias = document.createElement('tr');
+            for (var i = 0; i < 7; i++) {
+                fila_dias.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>';
+            }
+            e.appendChild(fila_dias);
+
+            var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
+            var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1);
+            
+            for (var s = 0; s < 6; s++) {
+                var nova_fila = document.createElement('tr');
+                for (var d = 0; d < 7; d++) {
+                    var cela = document.createElement('td');
+                    var span = document.createElement('span');
+                    span.innerHTML = actual.getDate();
+
+                    if (actual.getMonth() !== data.getMonth()) {
+                        cela.className = 'fora';
+                    }
+                    if (new Date().toDateString() === actual.toDateString()) {
+                        cela.className = 'avui';
+                    }
+
+                    cela.appendChild(span);
+                    nova_fila.appendChild(cela);
+                    actual.setDate(actual.getDate() + 1);
+                }
+                e.appendChild(nova_fila);
+            }
+        }
+
+        calendar(document.getElementById('calendar'), currentDatePointer);
+    </script>
+</body>
+</html>
