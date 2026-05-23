@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knowledge Archive - Sticky Note</title>
+    <title>Knowledge Archive - Sticky Note (Mono)</title>
     <style>
         body {
             font-family: 'Inter', -apple-system, sans-serif;
@@ -57,21 +57,21 @@
         .save-status.saving {
             color: #a9b3be;
         }
-        /* Área de Texto */
+        /* Área de Texto com Fonte Monoespaçada */
         .note-textarea {
             flex: 1;
             background-color: transparent;
             border: none;
             padding: 20px;
-            color: #c4b4a7; /* Tom areia escuro confortável para leitura */
-            font-size: 14px;
+            color: #c4b4a7; /* Tom areia escuro */
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; /* Tipografia Monoespaçada */
+            font-size: 13px; /* Levemente reduzida para melhor legibilidade mono */
             line-height: 1.6;
             resize: none;
             outline: none;
-            font-family: inherit;
             box-sizing: border-box;
         }
-        /* Customização da barra de rolagem para combinar com o tema */
+        /* Customização da barra de rolagem */
         .note-textarea::-webkit-scrollbar {
             width: 6px;
         }
@@ -83,7 +83,7 @@
             border-radius: 3px;
         }
         .note-textarea::-webkit-scrollbar-thumb:hover {
-            background: #243042; /* Azul Midnight no hover do scroll */
+            background: #243042;
         }
     </style>
 </head>
@@ -106,7 +106,6 @@
         const statusEl = document.getElementById('status');
         let saveTimeout;
 
-        // Carrega a nota salva anteriormente, se existir
         window.addEventListener('DOMContentLoaded', () => {
             const savedNote = localStorage.getItem('archive_sticky_note');
             if (savedNote) {
@@ -114,15 +113,12 @@
             }
         });
 
-        // Monitora a digitação e aciona o salvamento automático com 'debounce'
         textarea.addEventListener('input', () => {
             statusEl.textContent = 'Saving...';
             statusEl.classList.add('saving');
 
-            // Cancela o timer anterior para não sobrecarregar o salvamento
             clearTimeout(saveTimeout);
 
-            // Aguarda 500ms sem digitar para salvar efetivamente
             saveTimeout = setTimeout(() => {
                 localStorage.setItem('archive_sticky_note', textarea.value);
                 statusEl.textContent = 'Synced';
