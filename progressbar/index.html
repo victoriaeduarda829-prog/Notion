@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knowledge Archive - Life Progress</title>
+    <title>Knowledge Archive - Life Progress (Rectangular)</title>
     <style>
         body {
             font-family: 'Inter', -apple-system, sans-serif;
@@ -38,7 +38,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        /* Estrutura de cada barra */
         .progress-section {
             margin-bottom: 18px;
         }
@@ -60,29 +59,29 @@
         }
         .progress-percentage {
             color: #a9b3be; /* Cinza-azulado fosco */
-            font-family: 'SFMono-Regular', Consolas, monospace; /* Alinhamento numérico fixo */
+            font-family: 'SFMono-Regular', Consolas, monospace;
             font-size: 11px;
             font-weight: 700;
         }
-        /* Trilhas e preenchimentos */
+        /* Trilhas e preenchimentos totalmente retangulares e mais espessos */
         .bar-track {
-            background-color: #1a130e; /* Fundo escuro da barra */
-            height: 8px;
-            border-radius: 4px;
+            background-color: #1a130e;
+            height: 16px; /* Espessura aumentada de 8px para 16px */
+            border-radius: 0; /* Bordas retangulares quadradas */
             overflow: hidden;
             width: 100%;
             border: 1px solid #281e17;
         }
         .bar-fill {
-            background-color: #243042; /* Azul Midnight Fosco como progresso */
+            background-color: #243042; /* Azul Midnight if fosco */
             height: 100%;
             width: 0%;
-            border-radius: 4px;
-            transition: width 0.5s ease-out; /* Animação suave ao carregar */
+            border-radius: 0; /* Bordas retangulares quadradas */
+            transition: width 0.5s ease-out;
         }
-        /* Destaque sutil para a barra do ano atual */
-        .year-section .bar-fill {
-            background-color: #66819b; /* O seu azul principal para a métrica macro */
+        /* Destaque sutil usando seu azul principal para as métricas macro */
+        .week-section .bar-fill, .year-section .bar-fill {
+            background-color: #66819b; /* O seu azul principal */
         }
     </style>
 </head>
@@ -101,6 +100,17 @@
             </div>
             <div class="bar-track">
                 <div class="bar-fill" id="day-bar"></div>
+            </div>
+        </div>
+
+        <!-- Progresso da Semana -->
+        <div class="progress-section week-section">
+            <div class="label-container">
+                <div class="progress-label">This Week</div>
+                <div class="progress-percentage" id="week-pct">0%</div>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill" id="week-bar"></div>
             </div>
         </div>
 
@@ -136,33 +146,39 @@
             const diffDay = now - startOfDay;
             const dayProgress = (diffDay / (24 * 60 * 60 * 1000)) * 100;
 
-            // 2. Cálculo do Mês
+            // 2. Cálculo da Semana (Considerando o início no Domingo)
+            const currentDayOfWeek = now.getDay(); // 0 (Domingo) a 6 (Sábado)
+            const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - currentDayOfWeek);
+            const diffWeek = now - startOfWeek;
+            const weekProgress = (diffWeek / (7 * 24 * 60 * 60 * 1000)) * 100;
+
+            // 3. Cálculo do Mês
             const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
             const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
             const totalDaysInMonth = endOfMonth.getDate();
             const diffMonth = now - startOfMonth;
             const monthProgress = (diffMonth / (totalDaysInMonth * 24 * 60 * 60 * 1000)) * 100;
 
-            // 3. Cálculo do Ano
+            // 4. Cálculo do Ano
             const startOfYear = new Date(now.getFullYear(), 0, 1);
             const endOfYear = new Date(now.getFullYear() + 1, 0, 1);
             const totalTimeInYear = endOfYear - startOfYear;
             const diffYear = now - startOfYear;
             const yearProgress = (diffYear / totalTimeInYear) * 100;
 
-            // Atualiza o DOM (Interface)
+            // Atualiza o DOM
             updateBar('day', dayProgress);
+            updateBar('week', weekProgress);
             updateBar('month', monthProgress);
             updateBar('year', yearProgress);
         }
 
         function updateBar(id, progress) {
-            const percentage = progress.toFixed(1); // Exibe uma casa decimal para precisão fluida
+            const percentage = progress.toFixed(1);
             document.getElementById(`${id}-pct`).textContent = `${percentage}%`;
             document.getElementById(`${id}-bar`).style.width = `${percentage}%`;
         }
 
-        // Executa imediatamente e atualiza a cada 30 segundos de forma leve
         calculateProgress();
         setInterval(calculateProgress, 30000);
     </script>
