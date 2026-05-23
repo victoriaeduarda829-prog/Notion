@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Archive - Pomodoro</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #191919; /* Cor exata do modo escuro do Notion */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .pomodoro-container {
+            zoom: 0.7;
+            background-color: #221a14; /* Marrom Espresso do seu Acervo */
+            border-radius: 16px;
+            width: 340px;
+            padding: 24px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra reduzida */
+            border: 1px solid #33271e;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        /* Abas de Modo (Pomodoro / Short Break / Long Break) */
+        .mode-selector {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        .mode-btn {
+            background: #1a130e; /* Marrom profundo */
+            color: #8c7361;
+            border: 1px solid #281e17;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            flex: 1;
+            transition: 0.2s ease;
+        }
+        .mode-btn:hover {
+            background-color: rgba(36, 48, 66, 0.4);
+            color: #a3b8cc;
+        }
+        .mode-btn.active {
+            background-color: #243042; /* Azul Midnight Fosco ativo */
+            color: #ffffff;
+            border-color: #36475e;
+        }
+        /* Display do Cronômetro */
+        .timer-display {
+            font-size: 4.5em;
+            font-weight: 800;
+            color: #ebdcd0; /* Tom marfim/pergaminho */
+            margin-bottom: 24px;
+            font-variant-numeric: tabular-nums; /* Evita trepidação dos números */
+            letter-spacing: -1px;
+        }
+        /* Botão Principal de Controle */
+        .control-btn {
+            background-color: #3d2f25;
+            color: #ebdcd0;
+            border: 1px solid #4a392d;
+            padding: 14px 40px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            width: 80%;
+        }
+        .control-btn:hover {
+            background-color: #243042; /* Transiciona para o azul midnight no hover */
+            border-color: #36475e;
+            color: #ffffff;
+        }
+        /* Contador de Ciclos Concluídos */
+        .session-counter {
+            margin-top: 20px;
+            font-size: 11px;
+            color: #556982; /* Azul midnight sutil */
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pomodoro-container">
+        <div class="mode-selector">
+            <button class="mode-btn active" onclick="setMode('pomodoro')">Focus</button>
+            <button class="mode-btn" onclick="setMode('short')">Short Break</button>
+            <button class="mode-btn" onclick="setMode('long')">Long Break</button>
+        </div>
+        
+        <div class="timer-display" id="timer">25:00</div>
+        
+        <button class="control-btn" id="start-btn" onclick="toggleTimer()">Start</button>
+        
+        <div class="session-counter" id="counter">Sessions: 0 / 4</div>
+    </div>
+
+    <script>
+        let timer;
+        let timeLeft = 1500; // 25 minutos em segundos
+        let isRunning = false;
+        let currentMode = 'pomodoro';
+        let completedSessions = 0;
+
+        const times = {
+            pomodoro: 1500, // 25:00
+            short: 300,     // 05:00
+            long: 900       // 15:00
+        };
+
+        const timerDisplay = document.getElementById('timer');
+        const startBtn = document.getElementById('start-btn');
+        const counterDisplay = document.getElementById('counter');
+        const buttons = document.querySelectorAll('.mode-btn');
+
+        function updateDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            timerDisplay.textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timer);
+                startBtn.textContent = 'Start';
+                isRunning = false;
+            } else {
+                isRunning = true;
+                startBtn.textContent = 'Pause';
+                timer = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(timer);
+                        isRunning = false;
+                        startBtn.textContent = 'Start';
+                        handleTimerComplete();
+                    }
+                }, 1000);
+            }
+        }
+
+        function setMode(mode) {
+            clearInterval(timer);
+            isRunning = false;
+            startBtn.textContent = 'Start';
+            currentMode = mode;
+            timeLeft = times[mode];
+            
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.textContent.toLowerCase().replace(' ', '') === mode || 
+                   (mode === 'short' && btn.textContent === 'Short Break') ||
+                   (mode === 'long' && btn.textContent === 'Long Break') ||
+                   (mode === 'pomodoro' && btn.textContent === 'Focus')) {
+                    btn.classList.add('active');
+                }
+            });
+            updateDisplay();
+        }
+
+        function handleTimerComplete() {
+            // Efeito visual sutil de alerta piscando a tela
+            document.body.style.backgroundColor = '#243042';
+            setTimeout(() => { document.body.style.backgroundColor = '#191919'; }, 500);
+
+            if (currentMode === 'pomodoro') {
+                completedSessions++;
+                if (completedSessions > 4) completedSessions = 1; // Reinicia o bloco após 4
+                counterDisplay.textContent = `Sessions: ${completedSessions} / 4`;
+                
+                if (completedSessions === 4) {
+                    setMode('long');
+                } else {
+                    setMode('short');
+                }
+            } else {
+                setMode('pomodoro');
+            }
+        }
+
+        updateDisplay();
+    </script>
+</body>
+</html>
