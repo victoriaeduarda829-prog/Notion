@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Archive - Guided Breathing</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #191919; /* Cor exata do modo escuro do Notion */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .breathing-container {
+            zoom: 0.7;
+            background-color: #221a14; /* Marrom Espresso do seu Acervo */
+            border-radius: 16px;
+            width: 340px;
+            height: 320px;
+            padding: 24px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid #33271e;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .widget-header {
+            width: 100%;
+            text-align: left;
+            border-bottom: 1px solid #281e17;
+            padding-bottom: 10px;
+        }
+        .widget-title {
+            color: #ebdcd0; /* Tom marfim/pergaminho */
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        /* Área Central da Animação */
+        .animation-circle-space {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+        }
+        /* O Círculo Guia Principal */
+        .breathing-circle {
+            width: 60px;
+            height: 60px;
+            background-color: #243042; /* Azul Midnight Fosco */
+            border: 2px solid #36475e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(36, 48, 66, 0.3);
+            transition: all 4s ease-in-out; /* Sincronizado com os ciclos */
+        }
+        /* Efeito de expansão máxima */
+        .breathing-circle.inhale {
+            width: 140px;
+            height: 140px;
+            background-color: #36475e;
+            box-shadow: 0 0 35px rgba(102, 129, 155, 0.4);
+        }
+        /* Texto Dinâmico de Instrução */
+        .breathing-text {
+            color: #ebdcd0;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            pointer-events: none;
+            text-align: center;
+        }
+        /* Botão de Controle */
+        .control-btn {
+            background: #1a130e; /* Marrom profundo */
+            color: #8c7361; /* Marrom muted */
+            border: 1px solid #281e17;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            width: 60%;
+        }
+        .control-btn:hover {
+            background-color: #243042; /* Transiciona para o azul no hover */
+            border-color: #36475e;
+            color: #ffffff;
+        }
+        .control-btn.active {
+            background-color: #3d2f25;
+            color: #ebdcd0;
+            border-color: #4a392d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="breathing-container">
+        <div class="widget-header">
+            <div class="widget-title">Mindfulness Archive</div>
+        </div>
+
+        <div class="animation-circle-space">
+            <div class="breathing-circle" id="circle">
+                <div class="breathing-text" id="text">Ready</div>
+            </div>
+        </div>
+
+        <button class="control-btn" id="trigger-btn" onclick="toggleBreathing()">Start Exercise</button>
+    </div>
+
+    <script>
+        let isBreathing = false;
+        let breathingInterval;
+        
+        const circle = document.getElementById('circle');
+        const text = document.getElementById('text');
+        const btn = document.getElementById('trigger-btn');
+
+        function toggleBreathing() {
+            if (isBreathing) {
+                // Para o exercício e resgata o estado inicial plano
+                clearInterval(breathingInterval);
+                isBreathing = false;
+                circle.classList.remove('inhale');
+                text.textContent = 'Ready';
+                btn.textContent = 'Start Exercise';
+                btn.classList.remove('active');
+            } else {
+                // Inicia o ciclo guiado
+                isBreathing = true;
+                btn.textContent = 'Stop Exercise';
+                btn.classList.add('active');
+                runCycle();
+                // Alterna o estado a cada 4000ms (4 segundos)
+                breathingInterval = setInterval(runCycle, 4000);
+            }
+        }
+
+        function runCycle() {
+            if (circle.classList.contains('inhale')) {
+                // Se já estava expandido, agora é hora de esvaziar
+                circle.classList.remove('inhale');
+                text.textContent = 'Exhale';
+            } else {
+                // Se estava retraído, agora expande puxando o ar
+                circle.classList.add('inhale');
+                text.textContent = 'Inhale';
+            }
+        }
+    </script>
+</body>
+</html>
