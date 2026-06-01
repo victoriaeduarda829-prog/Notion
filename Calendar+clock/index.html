@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midnight Hour Calendar & Clock</title>
+    <title>Midnight Whimsy Calendar</title>
     <style>
         body {
             font-family: 'Inter', -apple-system, sans-serif;
@@ -21,60 +21,59 @@
         table {
             border-collapse: separate;
             border-spacing: 0;
-            background-color: #121622;
-            border-radius: 16px;
+            background-color: #0b0d16; /* Roxo/Azul Meia-Noite Profundo */
+            border-radius: 12px; /* Cantos levemente mais retos/góticos */
             overflow: hidden;
             width: 340px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(102, 129, 155, 0.1);
-            border: 1px solid rgba(102, 129, 155, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.15); /* Fina borda ouro velho */
         }
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background: linear-gradient(180deg, #182032 0%, #121622 100%);
-            border-bottom: 1px solid rgba(102, 129, 155, 0.1);
+            background: linear-gradient(180deg, #131726 0%, #0b0d16 100%);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
         }
         .header-center {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
         }
         .month {
-            color: #ffffff;
-            font-size: 1.25em;
+            font-family: 'Playfair Display', 'Georgia', serif; /* Fonte Whimsy Gothic */
+            color: #d4af37; /* Ouro Velho das estrelas */
+            font-size: 1.35em;
             font-weight: 700;
             text-transform: capitalize;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
         .year {
-            font-size: 1em;
+            font-size: 0.85em;
             color: #a9b3be;
             font-weight: 600;
-            opacity: 0.7;
+            opacity: 0.5;
+            letter-spacing: 2px;
         }
-        /* Estilização do Relógio Digital */
         .digital-clock {
             font-size: 0.9em;
-            color: #66819b; /* O azul principal que você escolheu */
+            color: #66819b; /* O seu azul noturno de volta */
             font-weight: 700;
-            letter-spacing: 1px;
-            font-variant-numeric: tabular-nums; /* Evita que os números fiquem tremendo ao mudar */
+            letter-spacing: 1.5px;
+            font-variant-numeric: tabular-nums;
+            margin-top: 4px;
         }
         .day-header {
-            background-color: rgba(102, 129, 155, 0.05);
-            color: #a9b3be;
-            font-size: 11px;
+            background-color: rgba(102, 129, 155, 0.03);
+            color: #a9b3be; /* Seu cinza-azulado */
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            padding: 12px 0;
-            letter-spacing: 1px;
-            border-bottom: 1px solid rgba(102, 129, 155, 0.1);
+            padding: 14px 0 10px 0;
+            letter-spacing: 1.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
         td {
             padding: 6px 4px;
@@ -93,25 +92,25 @@
             transition: 0.2s ease;
         }
         td:not(.fora):not(.avui) > span:hover {
-            background-color: rgba(102, 129, 155, 0.2);
-            color: #ffffff;
+            background-color: rgba(212, 175, 55, 0.1); /* Brilho estelar no hover */
+            color: #d4af37;
             cursor: pointer;
         }
         td.avui > span {
-            background-color: #66819b;
+            background-color: #66819b; /* Seu azul destacando o hoje */
             color: #ffffff !important;
             font-weight: 800;
-            box-shadow: 0 4px 12px rgba(102, 129, 155, 0.4);
+            border: 1px solid #d4af37; /* Circundado em ouro */
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
         }
         td.fora > span {
-            color: #a9b3be;
-            opacity: 0.3;
+            color: #1a1f33; /* Dias sumindo na névoa da noite */
         }
         .boto-next, .boto-prev {
-            background: rgba(102, 129, 155, 0.15);
-            color: #ffffff;
-            border: 1px solid rgba(102, 129, 155, 0.25);
-            border-radius: 8px;
+            background: transparent;
+            color: #a9b3be;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 6px;
             width: 30px;
             height: 30px;
             cursor: pointer;
@@ -122,30 +121,24 @@
             transition: 0.2s;
         }
         .boto-next:hover, .boto-prev:hover {
-            background: #66819b;
-            border-color: #66819b;
+            background: rgba(212, 175, 55, 0.15);
+            color: #d4af37;
+            border-color: #d4af37;
         }
     </style>
 </head>
 <body>
     <div id="calendar"></div>
     <script>
-        var months = [
-            'january', 'february', 'march', 'april', 'may', 'june',
-            'july', 'august', 'september', 'october', 'november', 'december'
-        ];
+        var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
         var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        
         var currentDatePointer = new Date();
 
         function updateClock() {
             var clockEl = document.getElementById('live-clock');
             if (clockEl) {
                 var now = new Date();
-                var hours = String(now.getHours()).padStart(2, '0');
-                var minutes = String(now.getMinutes()).padStart(2, '0');
-                var seconds = String(now.getSeconds()).padStart(2, '0');
-                clockEl.innerHTML = hours + ':' + minutes + ':' + seconds;
+                clockEl.innerHTML = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0');
             }
         }
 
@@ -163,12 +156,8 @@
             var boto_prev = document.createElement('button');
             boto_prev.className = 'boto-prev';
             boto_prev.innerHTML = '‹';
-            boto_prev.onclick = function() {
-                currentDatePointer.setMonth(currentDatePointer.getMonth() - 1);
-                calendar(widget, currentDatePointer);
-            };
+            boto_prev.onclick = function() { currentDatePointer.setMonth(currentDatePointer.getMonth() - 1); calendar(widget, currentDatePointer); };
 
-            // Bloco centralizado contendo Mês/Ano e o Relógio
             var headerCenter = document.createElement('div');
             headerCenter.className = 'header-center';
 
@@ -186,10 +175,7 @@
             var boto_next = document.createElement('button');
             boto_next.className = 'boto-next';
             boto_next.innerHTML = '›';
-            boto_next.onclick = function() {
-                currentDatePointer.setMonth(currentDatePointer.getMonth() + 1);
-                calendar(widget, currentDatePointer);
-            };
+            boto_next.onclick = function() { currentDatePointer.setMonth(currentDatePointer.getMonth() + 1); calendar(widget, currentDatePointer); };
 
             navContainer.appendChild(boto_prev);
             navContainer.appendChild(headerCenter);
@@ -199,9 +185,7 @@
             e.appendChild(headRow);
 
             var fila_dias = document.createElement('tr');
-            for (var i = 0; i < 7; i++) {
-                fila_dias.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>';
-            }
+            for (var i = 0; i < 7; i++) { fila_dias.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>'; }
             e.appendChild(fila_dias);
 
             var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
@@ -214,12 +198,8 @@
                     var span = document.createElement('span');
                     span.innerHTML = actual.getDate();
 
-                    if (actual.getMonth() !== data.getMonth()) {
-                        cela.className = 'fora';
-                    }
-                    if (new Date().toDateString() === actual.toDateString()) {
-                        cela.className = 'avui';
-                    }
+                    if (actual.getMonth() !== data.getMonth()) { cela.className = 'fora'; }
+                    if (new Date().toDateString() === actual.toDateString()) { cela.className = 'avui'; }
 
                     cela.appendChild(span);
                     nova_fila.appendChild(cela);
@@ -227,14 +207,10 @@
                 }
                 e.appendChild(nova_fila);
             }
-
-            // Inicia e força a atualização do relógio imediatamente após renderizar
             updateClock();
         }
 
         calendar(document.getElementById('calendar'), currentDatePointer);
-        
-        // Mantém o relógio rodando a cada segundo em tempo real
         setInterval(updateClock, 1000);
     </script>
 </body>
