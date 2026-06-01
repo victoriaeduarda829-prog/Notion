@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midnight Whimsy - Life Progress</title>
+    <title>Midnight Whimsy - Life Progress (Pearl)</title>
     <style>
         body {
             font-family: 'Inter', -apple-system, sans-serif;
@@ -60,12 +60,12 @@
             opacity: 0.8;
         }
         .progress-percentage {
-            color: #66819b; /* Seu azul de destaque nos números */
+            color: #eae6df; /* Tom perolado nos números */
             font-family: 'SFMono-Regular', Consolas, monospace;
             font-size: 11px;
             font-weight: 700;
         }
-        /* Trilhas e preenchimentos robustos e retangulares */
+        /* Trilhas e preenchimentos */
         .bar-track {
             background-color: #131726; /* Azul escuro fosco de fundo */
             height: 16px;
@@ -75,16 +75,16 @@
             border: 1px solid rgba(255, 255, 255, 0.02);
         }
         .bar-fill {
-            background-color: #66819b; /* Seu azul favorito preenchendo as barras */
+            background-color: #eae6df; /* Tom Branco Perolado (Luz Lunar) */
             height: 100%;
             width: 0%;
             border-radius: 0;
             transition: width 0.5s ease-out;
-            box-shadow: 0 0 10px rgba(102, 129, 155, 0.2); /* Brilho frio super sutil */
+            box-shadow: 0 0 12px rgba(234, 230, 223, 0.15); /* Brilho perolado sutil */
         }
-        /* Variação sutil de profundidade para as barras alternadas */
-        .month-section .bar-fill, .year-section .bar-fill {
-            background-color: #556982; /* Tom complementar um pouco mais fosco */
+        /* Variação sutil para as barras do meio, usando um pérola levemente desbotado/névoa */
+        .month-section .bar-fill, .week-section .bar-fill {
+            background-color: #cbd5e1; /* Pérola acinzentado/névoa */
         }
     </style>
 </head>
@@ -107,7 +107,7 @@
         </div>
 
         <!-- Progresso da Semana -->
-        <div class="progress-section">
+        <div class="progress-section week-section">
             <div class="label-container">
                 <div class="progress-label">This Week</div>
                 <div class="progress-percentage" id="week-pct">0%</div>
