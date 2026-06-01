@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midnight Whimsy - Life Progress</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #191919; /* Cor exata do modo escuro do Notion */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .progress-container {
+            zoom: 0.7;
+            background-color: #0b0d16; /* Fundo Meia-Noite Profundo */
+            border-radius: 12px;
+            width: 340px;
+            padding: 24px 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(102, 129, 155, 0.15); /* Fina borda no seu azul fosco */
+            box-sizing: border-box;
+        }
+        .widget-header {
+            margin-bottom: 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(102, 129, 155, 0.1);
+            padding-bottom: 10px;
+        }
+        .widget-title {
+            font-family: 'Playfair Display', 'Georgia', serif; /* Fonte elegante gótica */
+            color: #a9b3be; /* Cinza-azulado lunar */
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .progress-section {
+            margin-bottom: 18px;
+        }
+        .progress-section:last-child {
+            margin-bottom: 0;
+        }
+        .label-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .progress-label {
+            color: #a9b3be;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+        .progress-percentage {
+            color: #66819b; /* Seu azul de destaque nos números */
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        /* Trilhas e preenchimentos robustos e retangulares */
+        .bar-track {
+            background-color: #131726; /* Azul escuro fosco de fundo */
+            height: 16px;
+            border-radius: 0;
+            overflow: hidden;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        .bar-fill {
+            background-color: #66819b; /* Seu azul favorito preenchendo as barras */
+            height: 100%;
+            width: 0%;
+            border-radius: 0;
+            transition: width 0.5s ease-out;
+            box-shadow: 0 0 10px rgba(102, 129, 155, 0.2); /* Brilho frio super sutil */
+        }
+        /* Variação sutil de profundidade para as barras alternadas */
+        .month-section .bar-fill, .year-section .bar-fill {
+            background-color: #556982; /* Tom complementar um pouco mais fosco */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container">
+        <div class="widget-header">
+            <div class="widget-title">Chronicles of Time</div>
+        </div>
+
+        <!-- Progresso do Dia -->
+        <div class="progress-section">
+            <div class="label-container">
+                <div class="progress-label">Today</div>
+                <div class="progress-percentage" id="day-pct">0%</div>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill" id="day-bar"></div>
+            </div>
+        </div>
+
+        <!-- Progresso da Semana -->
+        <div class="progress-section">
+            <div class="label-container">
+                <div class="progress-label">This Week</div>
+                <div class="progress-percentage" id="week-pct">0%</div>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill" id="week-bar"></div>
+            </div>
+        </div>
+
+        <!-- Progresso do Mês -->
+        <div class="progress-section month-section">
+            <div class="label-container">
+                <div class="progress-label">This Month</div>
+                <div class="progress-percentage" id="month-pct">0%</div>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill" id="month-bar"></div>
+            </div>
+        </div>
+
+        <!-- Progresso do Ano -->
+        <div class="progress-section year-section">
+            <div class="label-container">
+                <div class="progress-label">This Year</div>
+                <div class="progress-percentage" id="year-pct">0%</div>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill" id="year-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateProgress() {
+            const now = new Date();
+
+            // 1. Cálculo do Dia
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const diffDay = now - startOfDay;
+            const dayProgress = (diffDay / (24 * 60 * 60 * 1000)) * 100;
+
+            // 2. Cálculo da Semana (Considerando o início no Domingo)
+            const currentDayOfWeek = now.getDay();
+            const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - currentDayOfWeek);
+            const diffWeek = now - startOfWeek;
+            const weekProgress = (diffWeek / (7 * 24 * 60 * 60 * 1000)) * 100;
+
+            // 3. Cálculo do Mês
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+            const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            const totalDaysInMonth = endOfMonth.getDate();
+            const diffMonth = now - startOfMonth;
+            const monthProgress = (diffMonth / (totalDaysInMonth * 24 * 60 * 60 * 1000)) * 100;
+
+            // 4. Cálculo do Ano
+            const startOfYear = new Date(now.getFullYear(), 0, 1);
+            const endOfYear = new Date(now.getFullYear() + 1, 0, 1);
+            const totalTimeInYear = endOfYear - startOfYear;
+            const diffYear = now - startOfYear;
+            const yearProgress = (diffYear / totalTimeInYear) * 100;
+
+            // Atualiza o DOM
+            updateBar('day', dayProgress);
+            updateBar('week', weekProgress);
+            updateBar('month', monthProgress);
+            updateBar('year', yearProgress);
+        }
+
+        function updateBar(id, progress) {
+            const percentage = progress.toFixed(1);
+            document.getElementById(`${id}-pct`).textContent = `${percentage}%`;
+            document.getElementById(`${id}-bar`).style.width = `${percentage}%`;
+        }
+
+        calculateProgress();
+        setInterval(calculateProgress, 30000);
+    </script>
+</body>
+</html>
