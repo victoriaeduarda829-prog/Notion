@@ -30,6 +30,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             opacity: 0.8;
+            text-align: center;
         }
         
         #timer { 
@@ -69,6 +70,17 @@
             display: block; 
             margin-bottom: 0px; 
         }
+
+        /* Estilo para a frase final */
+        .finished-text {
+            color: white;
+            font-size: 0.75em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 5px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -92,7 +104,12 @@
         const diff = targetDate - now;
 
         if (diff <= 0) {
-            document.getElementById("container").innerHTML = "<h1 style='color:white; font-size: 1em;'>Sobrevivi!</h1>";
+            const timerElement = document.getElementById("timer");
+            if (timerElement) {
+                timerElement.outerHTML = `
+                    <div class="finished-text">Já está em cartaz! 🎞️</div>
+                `;
+            }
             return;
         }
 
@@ -107,7 +124,16 @@
         document.getElementById("seconds").innerText = s;
     }
 
-    setInterval(updateTimer, 1000);
+    const timerInterval = setInterval(() => {
+        const now = new Date().getTime();
+        if (targetDate - now <= 0) {
+            updateTimer();
+            clearInterval(timerInterval);
+        } else {
+            updateTimer();
+        }
+    }, 1000);
+    
     updateTimer();
 </script>
 </body>
