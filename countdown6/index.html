@@ -71,21 +71,15 @@
             margin-bottom: 0px; 
         }
 
+        /* Estilo limpo para a frase final */
         .finished-text {
             color: white;
-            font-size: 0.7em;
+            font-size: 0.75em;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             margin-top: 5px;
-        }
-
-        .movie-gif {
-            width: 160px;
-            height: auto;
-            border-radius: 8px;
-            margin-top: 5px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            text-align: center;
         }
     </style>
 </head>
@@ -104,8 +98,6 @@
 
 <script>
     const targetDate = new Date('Jun 04, 2026 00:00:00').getTime();
-    // Link alternativo e mais estável para o GIF do Ghostface
-    const gifUrl = "https://imgur.com";
 
     function updateTimer() {
         const now = new Date().getTime();
@@ -116,7 +108,6 @@
             if (timerElement) {
                 timerElement.outerHTML = `
                     <div class="finished-text">Já está em cartaz! 🎞️</div>
-                    <img class="movie-gif" src="${gifUrl}" alt="Movie GIF">
                 `;
             }
             return;
