@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://googleapis.com" rel="stylesheet">
+    <title>Notion Countdown</title>
+    <style>
+        body { 
+            background: #191919; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            font-family: 'Lato', sans-serif; 
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; 
+            zoom: 0.8; 
+        }
+
+        .title {
+            color: #E2B65C; /* Tom dourado focado em estudos */
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        #timer { 
+            text-align: center; 
+            text-transform: uppercase; 
+            font-size: .5em; 
+            letter-spacing: 1px; 
+            display: flex; 
+            gap: 6px; 
+        }
+
+        .unit { 
+            padding: 10px 6px; 
+            width: 48px; 
+            border-radius: 6px; 
+            color: white; 
+        }
+
+        /* Paleta degradê sóbria e focada */
+        .months { background: #222222; }
+        .weeks { background: #444444; }
+        .days { background: #666666; }
+        .hours { background: #888888; }
+
+        .numbers { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1.7em; 
+            display: block; 
+            margin-bottom: 0px; 
+        }
+
+        .finished-text {
+            color: #E2B65C;
+            font-size: 0.85em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div class="title">A Grande Prova 🎯</div>
+    
+    <div id="timer">
+        <div class="unit months"><span id="months" class="numbers">0</span> meses</div>
+        <div class="unit weeks"><span id="weeks" class="numbers">0</span> sem</div>
+        <div class="unit days"><span id="days" class="numbers">0</span> dias</div>
+        <div class="unit hours"><span id="hours" class="numbers">0</span> horas</div>
+    </div>
+</div>
+
+<script>
+    // Altere aqui a data da sua prova (Ano, Mês - 1, Dia, Hora, Minuto)
+    // Nota: O mês no JavaScript começa em 0 (Janeiro = 0, Novembro = 10)
+    const targetDate = new Date(2026, 10, 8, 13, 0, 0); 
+
+    function updateTimer() {
+        const now = new Date();
+        const diffMs = targetDate - now;
+
+        if (diffMs <= 0) {
+            const timerElement = document.getElementById("timer");
+            if (timerElement) {
+                timerElement.outerHTML = `
+                    <div class="finished-text">Chegou a hora! Boa sorte! 🧠✨</div>
+                `;
+            }
+            return;
+        }
+
+        // Cálculo exato de meses restantes considerando calendários diferentes
+        let months = (targetDate.getFullYear() - now.getFullYear()) * 12 + (targetDate.getMonth() - now.getMonth());
+        
+        // Ajusta se o dia atual for menor que o dia alvo
+        let tempDate = new Date(now);
+        tempDate.setMonth(tempDate.getMonth() + months);
+        if (tempDate > targetDate) {
+            months--;
+            tempDate = new Date(now);
+            tempDate.setMonth(tempDate.getMonth() + months);
+        }
+
+        // Restante do tempo após extrair os meses
+        const remainingMs = targetDate - tempDate;
+        
+        // Divisão do tempo restante em semanas, dias e horas
+        const weeks = Math.floor(remainingMs / 604800000);
+        const days = Math.floor((remainingMs % 604800000) / 86400000);
+        const hours = Math.floor((remainingMs % 86400000) / 3600000);
+
+        document.getElementById("months").innerText = months;
+        document.getElementById("weeks").innerText = weeks;
+        document.getElementById("days").innerText = days;
+        document.getElementById("hours").innerText = hours;
+    }
+
+    const timerInterval = setInterval(() => {
+        const now = new Date();
+        if (targetDate - now <= 0) {
+            updateTimer();
+            clearInterval(timerInterval);
+        } else {
+            updateTimer();
+        }
+    }, 60000); // Atualiza a cada 1 minuto (60000ms) já que não exibe segundos
+    
+    updateTimer();
+</script>
+</body>
+</html>
