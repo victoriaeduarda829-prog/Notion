@@ -25,7 +25,7 @@
         }
 
         .title {
-            color: #E2B65C; /* Tom dourado focado em estudos */
+            color: #FFFFFF; /* Título branco como pedido */
             font-size: 0.85em;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -44,16 +44,14 @@
 
         .unit { 
             padding: 10px 6px; 
-            width: 48px; 
+            width: 52px; 
             border-radius: 6px; 
-            color: white; 
         }
 
-        /* Paleta degradê sóbria e focada */
-        .months { background: #222222; }
-        .weeks { background: #444444; }
-        .days { background: #666666; }
-        .hours { background: #888888; }
+        /* Aplicação da sua nova paleta de cores */
+        .months { background: #1B3C53; color: #F9F3EF; }
+        .weeks { background: #456882; color: #F9F3EF; }
+        .days { background: #D2C1B6; color: #1B3C53; }
 
         .numbers { 
             font-family: 'Montserrat', sans-serif; 
@@ -63,7 +61,7 @@
         }
 
         .finished-text {
-            color: #E2B65C;
+            color: #FFFFFF;
             font-size: 0.85em;
             font-weight: bold;
             text-transform: uppercase;
@@ -82,55 +80,52 @@
         <div class="unit months"><span id="months" class="numbers">0</span> meses</div>
         <div class="unit weeks"><span id="weeks" class="numbers">0</span> sem</div>
         <div class="unit days"><span id="days" class="numbers">0</span> dias</div>
-        <div class="unit hours"><span id="hours" class="numbers">0</span> horas</div>
     </div>
 </div>
 
 <script>
-    // Altere aqui a data da sua prova (Ano, Mês - 1, Dia, Hora, Minuto)
-    // Nota: O mês no JavaScript começa em 0 (Janeiro = 0, Novembro = 10)
-    const targetDate = new Date(2026, 10, 8, 13, 0, 0); 
+    // Data configurada para 08 de Novembro de 2026 (Mês 10 no JS pois começa em 0)
+    const targetDate = new Date(2026, 10, 8, 0, 0, 0); 
 
     function updateTimer() {
         const now = new Date();
-        const diffMs = targetDate - now;
+        
+        // Zera as horas de 'now' para focar apenas nos dias inteiros restantes
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const diffMs = targetDate - today;
 
         if (diffMs <= 0) {
             const timerElement = document.getElementById("timer");
             if (timerElement) {
                 timerElement.outerHTML = `
-                    <div class="finished-text">Chegou a hora! Boa sorte! 🧠✨</div>
+                    <div class="finished-text">Chegou o dia! Confie no seu processo! 🧠✨</div>
                 `;
             }
             return;
         }
 
-        // Cálculo exato de meses restantes considerando calendários diferentes
-        let months = (targetDate.getFullYear() - now.getFullYear()) * 12 + (targetDate.getMonth() - now.getMonth());
+        // Cálculo de meses inteiros considerando os dias do calendário
+        let months = (targetDate.getFullYear() - today.getFullYear()) * 12 + (targetDate.getMonth() - today.getMonth());
         
-        // Ajusta se o dia atual for menor que o dia alvo
-        let tempDate = new Date(now);
+        let tempDate = new Date(today);
         tempDate.setMonth(tempDate.getMonth() + months);
         if (tempDate > targetDate) {
             months--;
-            tempDate = new Date(now);
+            tempDate = new Date(today);
             tempDate.setMonth(tempDate.getMonth() + months);
         }
 
-        // Restante do tempo após extrair os meses
+        // Restante do tempo convertido em semanas e dias
         const remainingMs = targetDate - tempDate;
-        
-        // Divisão do tempo restante em semanas, dias e horas
         const weeks = Math.floor(remainingMs / 604800000);
         const days = Math.floor((remainingMs % 604800000) / 86400000);
-        const hours = Math.floor((remainingMs % 86400000) / 3600000);
 
         document.getElementById("months").innerText = months;
         document.getElementById("weeks").innerText = weeks;
         document.getElementById("days").innerText = days;
-        document.getElementById("hours").innerText = hours;
     }
 
+    // Verifica a cada minuto se o dia mudou para atualizar a contagem
     const timerInterval = setInterval(() => {
         const now = new Date();
         if (targetDate - now <= 0) {
@@ -139,7 +134,7 @@
         } else {
             updateTimer();
         }
-    }, 60000); // Atualiza a cada 1 minuto (60000ms) já que não exibe segundos
+    }, 60000);
     
     updateTimer();
 </script>
