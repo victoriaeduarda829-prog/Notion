@@ -21,11 +21,11 @@
             flex-direction: column;
             align-items: center;
             gap: 15px; 
-            zoom: 0.8; 
+            zoom: 1.0; 
         }
 
         .title {
-            color: #FFFFFF; /* Título branco como pedido */
+            color: #FFFFFF;
             font-size: 0.85em;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -48,10 +48,11 @@
             border-radius: 6px; 
         }
 
-        /* Aplicação da sua nova paleta de cores */
+        /* Distribuição da paleta de cores incluindo as horas */
         .months { background: #1B3C53; color: #F9F3EF; }
         .weeks { background: #456882; color: #F9F3EF; }
         .days { background: #D2C1B6; color: #1B3C53; }
+        .hours { background: #F9F3EF; color: #1B3C53; }
 
         .numbers { 
             font-family: 'Montserrat', sans-serif; 
@@ -74,58 +75,60 @@
 <body>
 
 <div id="container">
-    <div class="title">A Grande Prova 🎯</div>
+    <div class="title">Até aquela prova</div>
     
     <div id="timer">
         <div class="unit months"><span id="months" class="numbers">0</span> meses</div>
         <div class="unit weeks"><span id="weeks" class="numbers">0</span> sem</div>
         <div class="unit days"><span id="days" class="numbers">0</span> dias</div>
+        <div class="unit hours"><span id="hours" class="numbers">0</span> horas</div>
     </div>
 </div>
 
 <script>
-    // Data configurada para 08 de Novembro de 2026 (Mês 10 no JS pois começa em 0)
+    // Configurado para o início do dia 08 de Novembro de 2026 (Meia-noite)
     const targetDate = new Date(2026, 10, 8, 0, 0, 0); 
 
     function updateTimer() {
         const now = new Date();
-        
-        // Zera as horas de 'now' para focar apenas nos dias inteiros restantes
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const diffMs = targetDate - today;
+        const diffMs = targetDate - now;
 
         if (diffMs <= 0) {
             const timerElement = document.getElementById("timer");
             if (timerElement) {
                 timerElement.outerHTML = `
-                    <div class="finished-text">Chegou o dia! Confie no seu processo! 🧠✨</div>
+                    <div class="finished-text">É hoje bb. Só tenta não pirar.</div>
                 `;
             }
             return;
         }
 
-        // Cálculo de meses inteiros considerando os dias do calendário
-        let months = (targetDate.getFullYear() - today.getFullYear()) * 12 + (targetDate.getMonth() - today.getMonth());
+        // Cálculo de meses inteiros a partir do momento atual
+        let months = (targetDate.getFullYear() - now.getFullYear()) * 12 + (targetDate.getMonth() - now.getMonth());
         
-        let tempDate = new Date(today);
+        let tempDate = new Date(now);
         tempDate.setMonth(tempDate.getMonth() + months);
         if (tempDate > targetDate) {
             months--;
-            tempDate = new Date(today);
+            tempDate = new Date(now);
             tempDate.setMonth(tempDate.getMonth() + months);
         }
 
-        // Restante do tempo convertido em semanas e dias
+        // Restante do tempo exato após subtrair os meses inteiros
         const remainingMs = targetDate - tempDate;
+        
+        // Conversão precisa em semanas, dias e horas restantes
         const weeks = Math.floor(remainingMs / 604800000);
         const days = Math.floor((remainingMs % 604800000) / 86400000);
+        const hours = Math.floor((remainingMs % 86400000) / 3600000);
 
         document.getElementById("months").innerText = months;
         document.getElementById("weeks").innerText = weeks;
         document.getElementById("days").innerText = days;
+        document.getElementById("hours").innerText = hours;
     }
 
-    // Verifica a cada minuto se o dia mudou para atualizar a contagem
+    // Mantido o intervalo de 1 minuto para atualizar a transição das horas perfeitamente
     const timerInterval = setInterval(() => {
         const now = new Date();
         if (targetDate - now <= 0) {
