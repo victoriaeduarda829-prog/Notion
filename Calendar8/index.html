@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midnight Hour Calendar - Alt</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #191919; /* Fundo padrão do Notion Dark */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #calendar {
+            zoom: 0.68;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            /* O seu #121622 como estrutura externa/moldura do widget */
+            background-color: #121622;
+            border-radius: 20px;
+            padding: 10px;
+            width: 348px;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(169, 179, 190, 0.12);
+            border: 1px solid #222b3d;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 10px 16px 10px;
+        }
+        .month {
+            color: #f1f5f9;
+            font-size: 1.15em;
+            font-weight: 700;
+            text-transform: capitalize;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            letter-spacing: 0.4px;
+        }
+        .year {
+            font-size: 0.85em;
+            color: #66819b; /* Azul pontual no ano */
+            font-weight: 600;
+            background: rgba(102, 129, 155, 0.12);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+        /* Cria o efeito de cartão interno escuro apenas na área dos dias */
+        tr:nth-child(2) th {
+            background-color: #191a1d;
+            padding-top: 14px;
+            padding-bottom: 10px;
+            border-top: 1px solid rgba(102, 129, 155, 0.15);
+        }
+        tr:nth-child(2) th:first-child {
+            border-top-left-radius: 14px;
+            border-left: 1px solid rgba(102, 129, 155, 0.15);
+        }
+        tr:nth-child(2) th:last-child {
+            border-top-right-radius: 14px;
+            border-right: 1px solid rgba(102, 129, 155, 0.15);
+        }
+        .day-header {
+            color: #7c8b9c;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+        td {
+            background-color: #191a1d; /* Painel interno neutro */
+            padding: 4px 3px;
+            text-align: center;
+        }
+        td:first-child {
+            border-left: 1px solid rgba(102, 129, 155, 0.15);
+        }
+        td:last-child {
+            border-right: 1px solid rgba(102, 129, 155, 0.15);
+        }
+        tr:last-child td {
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(102, 129, 155, 0.15);
+        }
+        tr:last-child td:first-child {
+            border-bottom-left-radius: 14px;
+        }
+        tr:last-child td:last-child {
+            border-bottom-right-radius: 14px;
+        }
+        td > span {
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px; /* Quadrado arredondado moderno (estilo iOS/Notion) */
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            margin: 0 auto;
+        }
+        /* Fim de semana levemente mais discreto para dar ritmo visual */
+        td:first-child > span,
+        td:last-child > span {
+            color: #8b9bb0;
+        }
+        td:not(.fora):not(.avui) > span:hover {
+            background-color: #121622;
+            color: #ffffff;
+            box-shadow: inset 0 0 0 1px #66819b;
+            cursor: pointer;
+        }
+        td.avui > span {
+            background-color: #121622; /* Fundo meia-noite no dia atual */
+            color: #ffffff !important;
+            font-weight: 700;
+            border: 1.5px solid #66819b; /* Borda luminosa pontual */
+            box-shadow: 0 0 14px rgba(102, 129, 155, 0.35);
+            position: relative;
+        }
+        /* Pontinho sutil abaixo do número do dia atual */
+        td.avui > span::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: #8fb1d1;
+        }
+        td.fora > span {
+            color: #525866;
+            opacity: 0.28;
+        }
+        .boto-next, .boto-prev {
+            background: #191a1d;
+            color: #a9b3be;
+            border: 1px solid rgba(102, 129, 155, 0.22);
+            border-radius: 10px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .boto-next:hover, .boto-prev:hover {
+            background: #66819b;
+            border-color: #66819b;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div id="calendar"></div>
+    <script>
+        var months = [
+            'january', 'february', 'march', 'april', 'may', 'june',
+            'july', 'august', 'september', 'october', 'november', 'december'
+        ];
+        var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        
+        var currentDatePointer = new Date();
+
+        function calendar(widget, data) {
+            widget.innerHTML = '';
+            var e = document.createElement('table');
+            widget.appendChild(e);
+
+            var headRow = document.createElement('tr');
+            var headCell = document.createElement('th');
+            headCell.setAttribute('colspan', 7);
+            var navContainer = document.createElement('div');
+            navContainer.className = 'nav-container';
+
+            var boto_prev = document.createElement('button');
+            boto_prev.className = 'boto-prev';
+            boto_prev.innerHTML = '‹';
+            boto_prev.onclick = function() {
+                currentDatePointer.setMonth(currentDatePointer.getMonth() - 1);
+                calendar(widget, currentDatePointer);
+            };
+
+            var titleDiv = document.createElement('div');
+            titleDiv.className = 'month';
+            titleDiv.innerHTML = months[data.getMonth()] + ' <span class="year">' + data.getFullYear() + '</span>';
+
+            var boto_next = document.createElement('button');
+            boto_next.className = 'boto-next';
+            boto_next.innerHTML = '›';
+            boto_next.onclick = function() {
+                currentDatePointer.setMonth(currentDatePointer.getMonth() + 1);
+                calendar(widget, currentDatePointer);
+            };
+
+            navContainer.appendChild(boto_prev);
+            navContainer.appendChild(titleDiv);
+            navContainer.appendChild(boto_next);
+            headCell.appendChild(navContainer);
+            headRow.appendChild(headCell);
+            e.appendChild(headRow);
+
+            var fila_dias = document.createElement('tr');
+            for (var i = 0; i < 7; i++) {
+                fila_dias.innerHTML += '<th class="day-header">' + days_abr[i] + '</th>';
+            }
+            e.appendChild(fila_dias);
+
+            var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
+            var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1);
+            
+            for (var s = 0; s < 6; s++) {
+                var nova_fila = document.createElement('tr');
+                for (var d = 0; d < 7; d++) {
+                    var cela = document.createElement('td');
+                    var span = document.createElement('span');
+                    span.innerHTML = actual.getDate();
+
+                    if (actual.getMonth() !== data.getMonth()) {
+                        cela.className = 'fora';
+                    }
+                    if (new Date().toDateString() === actual.toDateString()) {
+                        cela.className = 'avui';
+                    }
+
+                    cela.appendChild(span);
+                    nova_fila.appendChild(cela);
+                    actual.setDate(actual.getDate() + 1);
+                }
+                e.appendChild(nova_fila);
+            }
+        }
+
+        calendar(document.getElementById('calendar'), currentDatePointer);
+    </script>
+</body>
+</html>
