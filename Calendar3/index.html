@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background-color: #191919;
+            background-color: #191919; /* Fundo padrão do Notion Dark */
             margin: 0;
             display: flex;
             justify-content: center;
@@ -21,20 +21,20 @@
         table {
             border-collapse: separate;
             border-spacing: 0;
-            background-color: #121622; /* Fundo meia-noite fosco */
+            background-color: #202020; /* Fundo neutro escuro (substitui o azul-marinho) */
             border-radius: 16px;
             overflow: hidden;
             width: 340px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(102, 129, 155, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(102, 129, 155, 0.22); /* Borda fina com toque sutil de azul */
         }
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background: linear-gradient(180deg, #182032 0%, #121622 100%); /* Transição suave para o azul profundo */
-            border-bottom: 1px solid rgba(102, 129, 155, 0.1);
+            background-color: #202020; /* Cabeçalho neutro sem gradiente azulado */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
         .month {
             color: #ffffff;
@@ -48,26 +48,26 @@
         }
         .year {
             font-size: 1em;
-            color: #a9b3be; /* O cinza-azulado que você curtiu no ano */
+            color: #a9b3be; /* Mantido o cinza-azulado suave no ano */
             font-weight: 600;
-            opacity: 0.7;
+            opacity: 0.75;
         }
         .day-header {
-            background-color: rgba(102, 129, 155, 0.05); /* Faixa sutil usando o seu azul */
-            color: #a9b3be; /* Dias da semana com o cinza-azulado */
+            background-color: #1c1c1c; /* Faixa neutra levemente mais escura */
+            color: #8a949e;
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             padding: 12px 0;
             letter-spacing: 1px;
-            border-bottom: 1px solid rgba(102, 129, 155, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
         td {
             padding: 6px 4px;
             text-align: center;
         }
         td > span {
-            color: #cbd5e1;
+            color: #d4d4d4;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -79,24 +79,24 @@
             transition: 0.2s ease;
         }
         td:not(.fora):not(.avui) > span:hover {
-            background-color: rgba(102, 129, 155, 0.2);
+            background-color: rgba(102, 129, 155, 0.22); /* Azul pontual ao passar o mouse */
             color: #ffffff;
             cursor: pointer;
         }
         td.avui > span {
-            background-color: #66819b; /* O azul do modelo anterior destacando o dia atual */
+            background-color: #66819b; /* Destaque principal em azul no dia atual */
             color: #ffffff !important;
             font-weight: 800;
-            box-shadow: 0 4px 12px rgba(102, 129, 155, 0.4);
+            box-shadow: 0 4px 12px rgba(102, 129, 155, 0.35);
         }
         td.fora > span {
-            color: #a9b3be; /* Dias fora do mês usando o cinza-azulado com opacidade baixa */
-            opacity: 0.3;
+            color: #737373;
+            opacity: 0.35;
         }
         .boto-next, .boto-prev {
-            background: rgba(102, 129, 155, 0.15);
-            color: #ffffff;
-            border: 1px solid rgba(102, 129, 155, 0.25);
+            background: rgba(255, 255, 255, 0.04); /* Botões neutros em repouso */
+            color: #d4d4d4;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
             width: 30px;
             height: 30px;
@@ -108,8 +108,9 @@
             transition: 0.2s;
         }
         .boto-next:hover, .boto-prev:hover {
-            background: #66819b;
+            background: #66819b; /* Azul aparece apenas na interação */
             border-color: #66819b;
+            color: #ffffff;
         }
     </style>
 </head>
