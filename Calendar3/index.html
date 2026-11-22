@@ -21,22 +21,21 @@
         table {
             border-collapse: separate;
             border-spacing: 0;
-            /* Degradê contínuo: começa no #121622 no topo e dissolve para o neutro #1b1c1f na base */
             background: linear-gradient(180deg, #121622 0%, #171920 35%, #1b1c1f 100%);
             border-radius: 16px;
             overflow: hidden;
             width: 340px;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
-            /* Borda superior mais iluminada e inferior mais discreta */
-            border: 1px solid rgba(102, 129, 155, 0.22);
-            border-top-color: rgba(143, 177, 209, 0.35);
+            /* Sombreamento bem mais leve e rente à borda */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(102, 129, 155, 0.18);
+            border-top-color: rgba(143, 177, 209, 0.28);
         }
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 20px 16px 20px;
-            background: transparent; /* Deixa o degradê da tabela fluir naturalmente */
+            background: transparent;
         }
         .month {
             color: #f8fafc;
@@ -62,7 +61,6 @@
             text-transform: uppercase;
             padding: 10px 0 12px 0;
             letter-spacing: 1px;
-            /* Linha divisória centralizada que desaparece nas pontas */
             border-bottom: 1px solid rgba(102, 129, 155, 0.14);
         }
         td {
@@ -88,12 +86,12 @@
             cursor: pointer;
         }
         td.avui > span {
-            /* Centro em #121622 com anel azul e brilho atmosférico */
             background: radial-gradient(circle at 30% 30%, #232d42, #121622);
             color: #ffffff !important;
             font-weight: 800;
             border: 1.5px solid #7a98b5;
-            box-shadow: 0 0 16px rgba(102, 129, 155, 0.45), inset 0 0 8px rgba(102, 129, 155, 0.25);
+            /* Brilho ao redor do dia atual mais sutil */
+            box-shadow: 0 0 8px rgba(102, 129, 155, 0.28), inset 0 0 6px rgba(102, 129, 155, 0.2);
         }
         td.fora > span {
             color: #64748b;
@@ -117,7 +115,7 @@
             background: #66819b;
             border-color: #8fb1d1;
             color: #ffffff;
-            box-shadow: 0 0 12px rgba(102, 129, 155, 0.4);
+            box-shadow: 0 0 8px rgba(102, 129, 155, 0.3);
         }
     </style>
 </head>
