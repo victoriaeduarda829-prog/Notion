@@ -3,111 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matte Slate Calendar</title>
+    <title>Midnight Hour Calendar - Glow</title>
     <style>
-        body { 
+        body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background-color: #191919; 
-            margin: 0; 
+            background-color: #191919;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
-
-        #calendar { zoom: 0.7; }
-
+        #calendar {
+            zoom: 0.68;
+        }
         table {
             border-collapse: separate;
-            border-spacing: 4px;
-            background-color: #202020; 
-            border-radius: 15px;
-            padding: 20px;
-            /* Azul fosco e profundo na borda */
-            border: 1px solid #2C3E50; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border-spacing: 0;
+            background: linear-gradient(180deg, #121622 0%, #171920 35%, #1b1c1f 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            width: 340px;
+            /* Sombreamento bem mais leve e rente à borda */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(102, 129, 155, 0.18);
+            border-top-color: rgba(143, 177, 209, 0.28);
         }
-
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            padding: 20px 20px 16px 20px;
+            background: transparent;
         }
-
-        .month { 
-            color: #E0E0E0; /* Branco fosco */
-            font-size: 1.25em; 
-            font-weight: 600;
-            text-transform: capitalize;
-        }
-
-        .year { 
-            font-size: 11px; 
-            color: #5B7A96; /* Azul fosco acinzentado */
-            font-weight: 500;
-            display: block;
-            margin-top: 2px;
-        }
-
-        .day-header { 
-            color: #4A4A4A; 
-            font-size: 11px; 
+        .month {
+            color: #f8fafc;
+            font-size: 1.25em;
             font-weight: 700;
-            text-transform: uppercase;
-            padding-bottom: 10px;
+            text-transform: capitalize;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             letter-spacing: 0.5px;
         }
-
-        td > span { 
-            color: #B0B0B0; /* Cinza claro fosco */
+        .year {
+            font-size: 1em;
+            color: #66819b;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+        .day-header {
+            background-color: transparent;
+            color: #7c8d9e;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 10px 0 12px 0;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(102, 129, 155, 0.14);
+        }
+        td {
+            padding: 6px 4px;
+            text-align: center;
+        }
+        td > span {
+            color: #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 36px;
             height: 36px;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: 0.2s;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.25s ease;
         }
-
-        /* Dia Atual - Prateado Fosco */
-        td.avui > span { 
-            background-color: #C0C0C0; /* Prata */
-            color: #202020 !important; 
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(192, 192, 192, 0.2);
+        td:not(.fora):not(.avui) > span:hover {
+            background-color: rgba(18, 22, 34, 0.9);
+            color: #ffffff;
+            box-shadow: 0 0 0 1px rgba(102, 129, 155, 0.45);
+            cursor: pointer;
         }
-
-        /* Dias fora do mês */
-        td.fora > span { color: #353535; }
-
-        /* Botões em azul fosco */
+        td.avui > span {
+            background: radial-gradient(circle at 30% 30%, #232d42, #121622);
+            color: #ffffff !important;
+            font-weight: 800;
+            border: 1.5px solid #7a98b5;
+            /* Brilho ao redor do dia atual mais sutil */
+            box-shadow: 0 0 8px rgba(102, 129, 155, 0.28), inset 0 0 6px rgba(102, 129, 155, 0.2);
+        }
+        td.fora > span {
+            color: #64748b;
+            opacity: 0.25;
+        }
         .boto-next, .boto-prev {
-            background: #2A3B4C;
-            color: #C0C0C0;
-            border: none;
-            border-radius: 6px;
+            background: rgba(18, 22, 34, 0.6);
+            color: #a9b3be;
+            border: 1px solid rgba(102, 129, 155, 0.22);
+            border-radius: 8px;
             width: 30px;
             height: 30px;
             cursor: pointer;
+            font-size: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            transition: all 0.2s ease;
         }
-
         .boto-next:hover, .boto-prev:hover {
-            background: #34495E;
+            background: #66819b;
+            border-color: #8fb1d1;
+            color: #ffffff;
+            box-shadow: 0 0 8px rgba(102, 129, 155, 0.3);
         }
     </style>
 </head>
 <body>
     <div id="calendar"></div>
-
     <script>
-        var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        var months = [
+            'january', 'february', 'march', 'april', 'may', 'june',
+            'july', 'august', 'september', 'october', 'november', 'december'
+        ];
         var days_abr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        
+        var currentDatePointer = new Date();
 
         function calendar(widget, data) {
             widget.innerHTML = '';
@@ -117,23 +138,28 @@
             var headRow = document.createElement('tr');
             var headCell = document.createElement('th');
             headCell.setAttribute('colspan', 7);
-            
             var navContainer = document.createElement('div');
             navContainer.className = 'nav-container';
 
             var boto_prev = document.createElement('button');
             boto_prev.className = 'boto-prev';
             boto_prev.innerHTML = '‹';
-            boto_prev.onclick = function() { data.setMonth(data.getMonth() - 1); calendar(widget, new Date(data)); };
+            boto_prev.onclick = function() {
+                currentDatePointer.setMonth(currentDatePointer.getMonth() - 1);
+                calendar(widget, currentDatePointer);
+            };
 
             var titleDiv = document.createElement('div');
             titleDiv.className = 'month';
-            titleDiv.innerHTML = months[data.getMonth()] + '<span class="year">' + data.getFullYear() + '</span>';
+            titleDiv.innerHTML = months[data.getMonth()] + ' <span class="year">' + data.getFullYear() + '</span>';
 
             var boto_next = document.createElement('button');
             boto_next.className = 'boto-next';
             boto_next.innerHTML = '›';
-            boto_next.onclick = function() { data.setMonth(data.getMonth() + 1); calendar(widget, new Date(data)); };
+            boto_next.onclick = function() {
+                currentDatePointer.setMonth(currentDatePointer.getMonth() + 1);
+                calendar(widget, currentDatePointer);
+            };
 
             navContainer.appendChild(boto_prev);
             navContainer.appendChild(titleDiv);
@@ -150,15 +176,21 @@
 
             var inici_mes = new Date(data.getFullYear(), data.getMonth(), 1).getDay();
             var actual = new Date(data.getFullYear(), data.getMonth(), -inici_mes + 1);
-
+            
             for (var s = 0; s < 6; s++) {
                 var nova_fila = document.createElement('tr');
                 for (var d = 0; d < 7; d++) {
                     var cela = document.createElement('td');
                     var span = document.createElement('span');
                     span.innerHTML = actual.getDate();
-                    if (actual.getMonth() !== data.getMonth()) cela.className = 'fora';
-                    if (new Date().toDateString() === actual.toDateString()) cela.className = 'avui';
+
+                    if (actual.getMonth() !== data.getMonth()) {
+                        cela.className = 'fora';
+                    }
+                    if (new Date().toDateString() === actual.toDateString()) {
+                        cela.className = 'avui';
+                    }
+
                     cela.appendChild(span);
                     nova_fila.appendChild(cela);
                     actual.setDate(actual.getDate() + 1);
@@ -167,7 +199,7 @@
             }
         }
 
-        calendar(document.getElementById('calendar'), new Date());
+        calendar(document.getElementById('calendar'), currentDatePointer);
     </script>
 </body>
 </html>
